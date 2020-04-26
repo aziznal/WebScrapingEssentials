@@ -1,0 +1,8 @@
+{
+    "smtp_server": "smtp.gmail.com",
+    "sender": "abodena3al@gmail.com",
+    "sender_app_pass": "jhdhzwqmzfagomby",
+    "receiver": "abodenaal@gmail.com",
+    "subject": "Daily Exchange Rates",
+    "port": 587
+}
