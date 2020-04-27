@@ -1,9 +1,12 @@
-{   "spyderInfo": {
+{
+    "spyderInfo": {
         "SpyderVersion": "0.1",
         "Dev": "Abdulaziz Nal",
         "Email": "abodenaal@gmail.com"
     },
-    "currentFileIndex": 1,
-    "intervalBetweenScrapes": 3,
-    "disabled": false
+    "currentFileIndex": 3,
+    "intervalBetweenScrapes": 1800,
+    "disabled": false,
+    "startingHour": 9,
+    "closingHour": 18
 }
