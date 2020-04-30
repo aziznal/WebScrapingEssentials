@@ -7,6 +7,7 @@ from email import encoders
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
 
 
 # IDEA: Encrypt email_settings.json
@@ -32,6 +33,7 @@ class EmailSender:
     def set_email_body(self, html=None, text=None):
         """
         @param html: <str> path to email html template
+
         @param text: <str> email in plain-text
         """
         if html is not None and text is not None:
@@ -57,7 +59,9 @@ class EmailSender:
         self.message['Subject'] = self.settings['subject']
         self.message['From'] = self.settings['sender']
         self.message['To'] = self.settings['receiver']
-        self.message['Bcc'] = self.settings['receiver']
+
+        # TODO: see if disabling changes anything
+        # self.message['Bcc'] = self.settings['receiver']
 
         self.message.attach(MIMEText(*self.message_body_html))
         self.message.attach(MIMEText(*self.message_body_text))
