@@ -6,6 +6,12 @@ It includes the basic needs for each web scraping project.
 
 ## Details about each file
 
+* ### geckodriver.exe
+
+    Here for convenience. ***I did not create nor do I own this file!***
+    
+    Downloaded from [here](https://github.com/mozilla/geckodriver/releases)
+
 * ### [BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)
 
     Includes basic functions a spyder needs, like goto(url) or (eventually) scrollPage(amount)
