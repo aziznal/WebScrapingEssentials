@@ -4,20 +4,33 @@ from time import sleep
 import json
 from datetime import datetime
 from pprint import pprint
+from bs4 import BeautifulSoup
+
+from selenium.webdriver.firefox.options import Options
 
 class BaseSpyder:
-    def __init__(self, url, load_buffer=3):
+    def __init__(self, url, load_buffer=3, options: Options = None):
         """
-        @param url: url to navigate to
+        @param url: url to scrape from.
+
         @param load_buffer: how long to wait in between things that need waiting between in.
+
+        @param special_options: Special Options to pass to the browser (e.g headless mode, no-notification mode, etc..)
         """
         self.load_buffer = load_buffer
         self.url = url
+        
+        if options is not None:
+            print("initializing headless browser...")
+            self.driver = webdriver.Firefox(options=options)
+            print("Successfully Initialized")
 
-        self.driver = webdriver.Firefox()
+        else:
+            self.driver = webdriver.Firefox()
+
         self.goto(self.url)
 
-        self.page_source = self.driver.page_source
+        self.page_source = BeautifulSoup(self.driver.page_source, features="lxml")
 
         self.__settings_path = ""   # Don't put this before self.settings
         self.settings = self.load_settings()
@@ -29,6 +42,9 @@ class BaseSpyder:
     def refresh_page(self):
         self.driver.refresh()
         sleep(self.load_buffer)
+
+        # refresh page source to get new changes
+        self.page_source = BeautifulSoup(self.driver.page_source, features="lxml")
 
     def load_settings(self, filepath='spyder_settings.json'):
         """
