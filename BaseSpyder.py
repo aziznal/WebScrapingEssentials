@@ -76,7 +76,6 @@ class BaseSpyder:
 
                 print(f"successfully saved data to {_filename}")
 
-
     def get_timestamp(self, appending_to_file_name=False):
         """
         returns a formatted timestamp string (e.g "2020-09-25 Weekday 16:45:37" )
