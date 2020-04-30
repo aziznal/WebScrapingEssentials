@@ -6,36 +6,65 @@ It includes the basic needs for each web scraping project.
 
 ## Details about each file
 
-### [BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)
+* ### [BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)
 
-Includes basic functions a spyder needs, like goto(url) or (eventually) scrollPage(amount)
+    Includes basic functions a spyder needs, like goto(url) or (eventually) scrollPage(amount)
 
-* **Constructor**:
+    * **Constructor:**
 
-    Takes 3 parameters:
+        Takes 3 parameters:
 
-    * **url**: obvious
+        * **url:** obvious
 
-    * **load_buffer**: a wait time implemented in some functions to make sure everything is loaded
+        * **load_buffer:** a wait time implemented in some functions to make sure everything is loaded
 
-    * **options**: a selenium.webdriver.firefox.options object. used to define various options.
+        * **options:** a selenium.webdriver.firefox.options object. used to define various options.
 
-    The Spyder goes to the provided url as soon as it's initialized.
+        The Spyder goes to the provided url as soon as it's initialized.
 
-* **refresh_page**:
+    * **refresh_page:**
+        
+        Causes page to refresh and to re-new the page_source.
+
+        load_buffer is used here to make sure content has loaded before consequent operations.
+
+    * **load_settings** and **save_settings:**
     
-    Causes page to refresh and to re-new the page_source.
+        used to load and save spyder_settings.json
 
-    load_buffer is used here to make sure content has loaded before consequent operations.
+    * **get_timestamp:**
 
-* **load_settings** and **save_settings**:
-  
-    used to load and save spyder_settings.json
+        returns a timestamp including date and time. check function docs for details.
 
-* **get_timestamp**:
+    * **die**:
 
-    returns a timestamp including date and time. check function docs for details.
+        Ends the spyder's miserable life in the most humane way possible.
 
-* **die**:
+* ### [EmailSender.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/EmailSender.py)
 
-    Ends the spyder's miserable life in the most humane way possible.
+    Sends an email with an attachment. the email's body can be html or just plain text. Uses ***email.mime***
+    
+    ***NOTE: parent dir must include email_settings.json. Alternatively pass settings as a parameter to the constructor.***
+
+    *The Template for email_settings.json can be found [here](https://github.com/aziznal/WebScrapingEssentials/blob/master/email_settings.json)*
+
+    * **Constructor:**
+        
+        Takes 1 optional parameter:
+        * **settings:** a ***dictionary*** defining the settings **in the same format** as email_settings.json.
+
+    * **__load_settings:** Loads email_settings.json if no settings were passed to the constructor
+    * **set_email_body:** Defines the contents of the email.
+
+        Takes two parameters:
+        * ***html:*** the path to the email's html template
+        * ***text:*** the plain text form of the email in case the html fails to load/render.
+
+    * **set_attachment:** Adds an attachment to send with the email.
+
+        Takes one parameter:
+        * ***filepath:*** path to the to-be-attached file
+
+    * **__prep_message:** N/A
+
+    * **send_email**: Sends the email. (*note: use after ***set_email_body*** and ***set_attachment****) 
