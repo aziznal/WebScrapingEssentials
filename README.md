@@ -73,4 +73,10 @@ It includes the basic needs for each web scraping project.
 
     * **__prep_message:** N/A
 
-    * **send_email**: Sends the email. (*note: use after ***set_email_body*** and ***set_attachment****) 
+    * **send_email**: Sends the email. (*note: use after ***set_email_body*** and ***set_attachment****)
+
+* ### email_settings_template.json and spyder_settings_template.json
+
+    These two files show how the structure of their counterparts (without the *_template* at the end) should look like
+    
+    When in development, make sure to create files without *_template* appended to their name.
