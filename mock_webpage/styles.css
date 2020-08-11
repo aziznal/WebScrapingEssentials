@@ -1,0 +1,21 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: beige;
+
+    width: 75%;
+    height: 100%;
+
+    margin: auto;
+
+    padding: 1em;
+
+    border: 1px solid black;
+}
+
+h1,
+h2 {
+    text-align: center;
+}

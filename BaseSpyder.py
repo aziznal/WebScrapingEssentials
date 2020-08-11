@@ -8,73 +8,76 @@ from bs4 import BeautifulSoup
 
 from selenium.webdriver.firefox.options import Options
 
+
 class BaseSpyder:
-    def __init__(self, url, load_buffer=3, options: Options = None):
-        """
-        @param url: url to scrape from.
+    def __init__(self, url, buffer_time=3, options=None, path_to_settings="spyder_settings.json", **kwargs):
+        """ 
+        Args:
 
-        @param load_buffer: how long to wait in between things that need waiting between in.
+            url (str): page to load when browser is first launched
 
-        @param special_options: Special Options to pass to the browser (e.g headless mode, no-notification mode, etc..)
+            buffer_time (int, optional): a wait-time (in seconds) to confirm things like page loads. Defaults to 3.
+
+            options (selenium.webdriver.firefox.options.Options, optional): Use to pass custom options to the browser. Defaults to None.
+
+            path_to_settings (str): where to save and load the spyder's settings
         """
-        self.load_buffer = load_buffer
+
+        self.buffer_time = buffer_time
         self.url = url
-        
-        if options is not None:
-            print("initializing headless browser...")
-            self.driver = webdriver.Firefox(options=options)
-            print("Successfully Initialized")
+        self.options = options
+        self._settings_path = path_to_settings
 
-        else:
-            self.driver = webdriver.Firefox()
+        self.driver = webdriver.Firefox(options=self.options)
 
         self.goto(self.url)
 
         self.page_source = BeautifulSoup(self.driver.page_source, features="lxml")
 
-        self.__settings_path = ""   # Don't put this before self.settings
         self.settings = self.load_settings()
 
     def goto(self, url):
         self.driver.get(url)
-        sleep(self.load_buffer)
+        sleep(self.buffer_time)
 
     def refresh_page(self):
         self.driver.refresh()
-        sleep(self.load_buffer)
+        sleep(self.buffer_time)
 
         # refresh page source to get new changes
-        self.page_source = BeautifulSoup(self.driver.page_source, features="lxml")
+        self.page_source = BeautifulSoup(
+            self.driver.page_source, features="lxml")
 
-    def load_settings(self, filepath='spyder_settings.json'):
+    def load_settings(self):
         """
-        Loads spyder_settings.json (default name).
-        returns spyder_settings as <dict> 
+        Loads spyder_settings.json (default name),
+        returns dict 
         """
-        self.__settings_path = filepath
 
-        with open(self.__settings_path) as spyder_settings_json:
+        with open(self._settings_path) as spyder_settings_json:
             return json.load(spyder_settings_json)
 
     def save_settings(self):
         """
-        saves the current running spyder settings.
+        saves the current running spyder's settings as json
         """
         try:
 
-            with open(self.__settings_path, 'w') as spyder_settings_json:
+            with open(self._settings_path, 'w') as spyder_settings_json:
                 json.dump(self.settings, spyder_settings_json, indent=4)
-                print(f"successfully saved data to {self.__settings_path}")
+                print(f"Saved spyder_settings to {self._settings_path}")
 
         except Exception as e:
 
-            print(f"Warning! exception in spyder.save_settings: {e}\n\nAttempting to Save data somewhere else...")
+            print(
+                f"Warning! couldn't save spyder_settings: {e}\nAttempting to Save data somewhere else...")
 
-            _filename = 'spyder_settings_fallback' + self.get_timestamp(appending_to_file_name=True) + '.txt'
+            _filename = 'spyder_settings_fallback' + \
+                self.get_timestamp(appending_to_file_name=True) + '.txt'
             with open(_filename, 'a') as _file:
                 _file.write(str(self.settings))
 
-                print(f"successfully saved data to {_filename}")
+                print(f"Saved current spyder settings to {_filename}")
 
     def get_timestamp(self, appending_to_file_name=False):
         """
