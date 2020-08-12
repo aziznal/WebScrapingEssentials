@@ -7,31 +7,76 @@ from selenium.webdriver.firefox.options import Options
 
 # IMPORTANT: execute following command in console before running this file:
 #   python start_local_server.py 127.1.1.1 7123
+
 _address = "127.1.1.1"
 _port = "7123"
 mock_page = "mock_webpage.html"
 
+base_url = f"http://{_address}:{_port}/mock_webpage/{mock_page}"
+
+
+def make_spyder(cls):
+
+    options = Options()
+    options.headless = False
+
+    path = "test_spyder_settings.json"
+
+    cls.spyder = BaseSpyder(base_url, options=options, path_to_settings=path)
+
+
+def destroy_spyder(cls):
+    cls.spyder.die()
+
 
 class TestSpyder(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        make_spyder(cls)
+
+    @classmethod
+    def tearDownClass(cls):
+        destroy_spyder(cls)
+
     def setUp(self):
-
-        url = f"http://{_address}:{_port}/mock_webpage/{mock_page}"
-        options = Options()
-        options.headless = True
-        path = "spyder_settings_template.json"
-
-        self.spyder = BaseSpyder(url, options=options, path_to_settings=path)
+        self.spyder.buffer_time = 1
+        self.spyder.goto(base_url)
 
     def test_page_source(self):
         self.assertIsNotNone(self.spyder.page_source)
+        self.assertIsNotNone(self.spyder.page_soup)
 
-    def tearDown(self):
-        self.spyder.die()
+    def test_goto(self):
+
+        # Increasing while testing non-local url
+        self.spyder.buffer_time = 3
+
+        test_url = "https://www.google.com/"
+        self.spyder.goto(test_url)
+
+        self.assertEqual(self.spyder.url, test_url)
+
+    def test_url_assignment(self):
+        with self.assertRaises(TypeError):
+            self.spyder.url = "https://www.google.com"
+
+    def test_pagesource_assign(self):
+        with self.assertRaises(TypeError):
+            self.spyder.page_source = "foobar"
+
+    def test_smooth_scroll(self):
+        pass
+
+    def test_instant_scroll(self):
+        pass
+
+    def test_slow_type(self):
+        pass
 
 
-class TestEmailSender(unittest.TestCase):
-    pass
+# class TestEmailSender(unittest.TestCase):
+#     pass
 
 
 if __name__ == "__main__":

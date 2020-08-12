@@ -9,8 +9,12 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.firefox.options import Options
 
 
+default_options = Options()
+default_options.headless = True
+
+
 class BaseSpyder:
-    def __init__(self, url, buffer_time=3, options=None, path_to_settings="spyder_settings.json", **kwargs):
+    def __init__(self, url, buffer_time=3, options=default_options, path_to_settings="spyder_settings.json", **kwargs):
         """ 
         Args:
 
@@ -18,35 +22,54 @@ class BaseSpyder:
 
             buffer_time (int, optional): a wait-time (in seconds) to confirm things like page loads. Defaults to 3.
 
-            options (selenium.webdriver.firefox.options.Options, optional): Use to pass custom options to the browser. Defaults to None.
+            options (selenium.webdriver.firefox.options.Options, optional): Use to pass custom options to the browser.
 
-            path_to_settings (str): where to save and load the spyder's settings
         """
 
         self.buffer_time = buffer_time
-        self.url = url
-        self.options = options
+
         self._settings_path = path_to_settings
-
-        self.driver = webdriver.Firefox(options=self.options)
-
-        self.goto(self.url)
-
-        self.page_source = BeautifulSoup(self.driver.page_source, features="lxml")
-
         self.settings = self.load_settings()
 
-    def goto(self, url):
-        self.driver.get(url)
+        self._driver = webdriver.Firefox(options=options)
+ 
+        self.goto(url)
+
+        self.page_soup = self.__load_page_soup()
+
+
+    def __load_page_soup(self):
+        return BeautifulSoup(self.page_source, features="lxml")
+
+    @property
+    def url(self):
+        return self._driver.current_url
+
+    @url.setter
+    def url(self, _):
+        raise TypeError("BaseSpyder.url is a read-only property")
+    
+    @property
+    def page_source(self):
+        return self._driver.page_source
+
+    @page_source.setter
+    def page_source(self, _):
+        raise TypeError("BaseSpyder.page_source is a read-only property")
+
+    def wait(self):
         sleep(self.buffer_time)
+
+    def goto(self, url):
+        self._driver.get(url)
+        self.wait()
 
     def refresh_page(self):
-        self.driver.refresh()
-        sleep(self.buffer_time)
+        self._driver.refresh()
+        self.wait()
 
         # refresh page source to get new changes
-        self.page_source = BeautifulSoup(
-            self.driver.page_source, features="lxml")
+        self.page_soup = self.__load_page_soup()
 
     def load_settings(self):
         """
@@ -79,18 +102,27 @@ class BaseSpyder:
 
                 print(f"Saved current spyder settings to {_filename}")
 
-    def get_timestamp(self, appending_to_file_name=False):
+    def get_timestamp(self, for_filename=False):
         """
         returns a formatted timestamp string (e.g "2020-09-25 Weekday 16:45:37" )
         """
-        if appending_to_file_name:
+        if for_filename:
             formatted_time = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
         else:
             formatted_time = datetime.now().strftime("%Y-%m-%d %A %H:%M:%S")
 
         return formatted_time
 
+    def smooth_scroll(self, scroll_to, velocity):
+        pass
+
+    def instant_scroll(self, scroll_to):
+        pass
+
+    def slow_type(self, field, sentence, speed):
+        pass
+
     def die(self):
         print("Squashing the spyder...")
         self.save_settings()
-        self.driver.quit()
+        self._driver.quit()
