@@ -15,6 +15,20 @@ mock_page = "mock_webpage.html"
 base_url = f"http://{_address}:{_port}/mock_webpage/{mock_page}"
 
 
+def make_test_urls(cls):
+    test_urls = [
+        "google.com",
+        "youtube.com",
+        "bbc.com",
+        "wikipedia.org",
+        "w3schools.com"
+    ]
+
+    test_urls = ["https://www.%s/" % val for val in test_urls]
+    
+    cls.test_urls = test_urls
+
+
 def make_spyder(cls):
 
     options = Options()
@@ -34,6 +48,7 @@ class TestSpyder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         make_spyder(cls)
+        make_test_urls(cls)
 
     @classmethod
     def tearDownClass(cls):
@@ -49,13 +64,12 @@ class TestSpyder(unittest.TestCase):
 
     def test_goto(self):
 
-        # Increasing while testing non-local url
+        # Increase wait while testing non-local url
         self.spyder.buffer_time = 3
 
-        test_url = "https://www.google.com/"
-        self.spyder.goto(test_url)
-
-        self.assertEqual(self.spyder.url, test_url)
+        for url in self.test_urls:
+            self.spyder.goto(url)
+            self.assertEqual(self.spyder.url, url)
 
     def test_url_assignment(self):
         with self.assertRaises(TypeError):
