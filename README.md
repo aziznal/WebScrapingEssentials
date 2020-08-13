@@ -1,82 +1,29 @@
-# Web Scraping Essential Tools
+# Basic webscraper template
 
-## Why this exists
-This is here to make my life easier when I'm creating a web scraper.
-It includes the basic needs for each web scraping project.
+The two important components of this repo are _**[BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)**_ and _**[EmailSender.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/EmailSender.py)**_
 
-## Details about each file
+## Details about files
 
-* ### geckodriver.exe
+---
 
-    Here for convenience. ***I did not create nor do I own this file!***
-    
-    Downloaded from [here](https://github.com/mozilla/geckodriver/releases)
+## geckodriver.exe
 
-* ### [BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)
+Keep this file in local directory when using scraper on windows. If you're using a linux system, make sure to include geckodriver in PATH variable. Downloaded from [here](https://github.com/mozilla/geckodriver/releases)
 
-    Includes basic functions a spyder needs, like goto(url) or (eventually) scrollPage(amount)
+Note: This driver is for **_Mozilla Firefox_**
 
-    * **Constructor:**
+## [BaseSpyder.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpyder.py)
 
-        Takes 3 parameters:
+Use this as the superclass for your own project's spyder
 
-        * **url:** obvious
+This Spyder can do basic things like goto a url, scroll down the page in different ways, refresh the page, etc..
 
-        * **load_buffer:** a wait time implemented in some functions to make sure everything is loaded
+It acts as an interface to _**selenium.webdriver**_ to make setting up a project easier
 
-        * **options:** a selenium.webdriver.firefox.options object. used to define various options.
+**_NOTE: parent dir must include email_settings.json. Alternatively pass settings as a parameter when instantiating a new object._**
 
-        The Spyder goes to the provided url as soon as it's initialized.
+## [EmailSender.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/EmailSender.py)
 
-    * **refresh_page:**
-        
-        Causes page to refresh and to re-new the page_source.
+Sends an email with an attachment. the email's body can be html or just plain text. Uses **_email.mime_**
 
-        load_buffer is used here to make sure content has loaded before consequent operations.
-
-    * **load_settings** and **save_settings:**
-    
-        used to load and save spyder_settings.json
-
-    * **get_timestamp:**
-
-        returns a timestamp including date and time. check function docs for details.
-
-    * **die**:
-
-        Ends the spyder's miserable life in the most humane way possible.
-
-* ### [EmailSender.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/EmailSender.py)
-
-    Sends an email with an attachment. the email's body can be html or just plain text. Uses ***email.mime***
-    
-    ***NOTE: parent dir must include email_settings.json. Alternatively pass settings as a parameter to the constructor.***
-
-    *The Template for email_settings.json can be found [here](https://github.com/aziznal/WebScrapingEssentials/blob/master/email_settings.json)*
-
-    * **Constructor:**
-        
-        Takes 1 optional parameter:
-        * **settings:** a ***dictionary*** defining the settings **in the same format** as email_settings.json.
-
-    * **__load_settings:** Loads email_settings.json if no settings were passed to the constructor
-    * **set_email_body:** Defines the contents of the email.
-
-        Takes two parameters:
-        * ***html:*** the path to the email's html template
-        * ***text:*** the plain text form of the email in case the html fails to load/render.
-
-    * **set_attachment:** Adds an attachment to send with the email.
-
-        Takes one parameter:
-        * ***filepath:*** path to the to-be-attached file
-
-    * **__prep_message:** N/A
-
-    * **send_email**: Sends the email. (*note: use after ***set_email_body*** and ***set_attachment****)
-
-* ### email_settings_template.json and spyder_settings_template.json
-
-    These two files show how the structure of their counterparts (without the *_template* at the end) should look like
-    
-    When in development, make sure to create files without *_template* appended to their name.
+**_NOTE: parent dir must include email_settings.json. Alternatively pass settings as a parameter when instantiating a new object._**
