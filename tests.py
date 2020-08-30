@@ -1,6 +1,5 @@
 import unittest
-from BaseSpyder import BaseSpyder
-from EmailSender import EmailSender
+from BasicSpider import BasicSpider
 
 from selenium.webdriver.firefox.options import Options
 
@@ -29,55 +28,53 @@ def make_test_urls(cls):
     cls.test_urls = test_urls
 
 
-def make_spyder(cls):
+def make_spider(cls):
 
     options = Options()
     options.headless = False
 
-    path = "test_spyder_settings.json"
-
-    cls.spyder = BaseSpyder(base_url, options=options, path_to_settings=path)
+    cls.spider = BasicSpider(base_url, options=options)
 
 
-def destroy_spyder(cls):
-    cls.spyder.die()
+def destroy_spider(cls):
+    cls.spider.die()
 
 
-class TestSpyder(unittest.TestCase):
+class TestSpider(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        make_spyder(cls)
+        make_spider(cls)
         make_test_urls(cls)
 
     @classmethod
     def tearDownClass(cls):
-        destroy_spyder(cls)
+        destroy_spider(cls)
 
     def setUp(self):
-        self.spyder.buffer_time = 1
-        self.spyder.goto(base_url)
+        self.spider.buffer_time = 1
+        self.spider.goto(base_url)
 
     def test_page_source(self):
-        self.assertIsNotNone(self.spyder.page_source)
-        self.assertIsNotNone(self.spyder.page_soup)
+        self.assertIsNotNone(self.spider.page_source)
+        self.assertIsNotNone(self.spider.page_soup)
 
     def test_goto(self):
 
         # Increase wait while testing non-local url
-        self.spyder.buffer_time = 3
+        self.spider.buffer_time = 3
 
         for url in self.test_urls:
-            self.spyder.goto(url)
-            self.assertEqual(self.spyder.url, url)
+            self.spider.goto(url)
+            self.assertEqual(self.spider.url, url)
 
     def test_url_assignment(self):
         with self.assertRaises(TypeError):
-            self.spyder.url = "https://www.google.com"
+            self.spider.url = "https://www.google.com"
 
     def test_pagesource_assign(self):
         with self.assertRaises(TypeError):
-            self.spyder.page_source = "foobar"
+            self.spider.page_source = "foobar"
 
     def test_smooth_scroll(self):
         pass
@@ -87,10 +84,6 @@ class TestSpyder(unittest.TestCase):
 
     def test_slow_type(self):
         pass
-
-
-# class TestEmailSender(unittest.TestCase):
-#     pass
 
 
 if __name__ == "__main__":

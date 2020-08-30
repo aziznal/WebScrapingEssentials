@@ -1,8 +1,8 @@
 {
   "name": "base-spyder",
   "version": "1.0.0",
-  "description": "## Why this exists This is here to make my life easier when I'm creating a web scraper. It includes the basic needs for each web scraping project.",
-  "main": "index.js",
+  "description": "Simple interface for selenium.webdriver",
+  "main": "",
   "scripts": {
     "tests": "coverage run --omit=venv/* tests.py"
   },

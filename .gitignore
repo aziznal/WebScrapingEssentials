@@ -1,0 +1,9 @@
+# Files
+geckodriver.log
+project_settings.json
+TestSpider.py
+
+# Directories
+__pycache__
+.vscode
+venv
