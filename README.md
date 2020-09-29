@@ -1,6 +1,6 @@
 # Basic webscraper template
 
-The highlight of this repo is _**[BaseSpider.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpider.py)
+The highlight of this repo is _**[BaseSpider.py](https://github.com/aziznal/WebScrapingEssentials/blob/master/BaseSpider.py)**_
 
 ## Details about files
 

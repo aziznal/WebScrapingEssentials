@@ -1,7 +1,5 @@
 from selenium import webdriver
-import os
 from time import sleep
-import json
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -13,53 +11,52 @@ default_options.headless = True
 
 
 class BasicSpider:
-    def __init__(self, url, buffer_time=3, options=default_options, **kwargs):
+    def __init__(self, url, sleep_time=3, options=default_options):
         """ 
         Args:
         
             url (str): page to load when browser is first launched
-            buffer_time (int, optional): a wait-time (in seconds) to allow things like page loads to finish. Defaults to 3.
-            options (selenium.webdriver.firefox.options.Options, optional): Use to pass custom options to the browser.
+            sleep_time (int): a wait-time (in seconds) to allow things like page loads to finish.
+            options (selenium.webdriver.firefox.options.Options): custom options for browser
         """
 
-        self.buffer_time = buffer_time
+        self.sleep_time = sleep_time
+        self._browser = webdriver.Firefox(options=options)
 
-        self._driver = webdriver.Firefox(options=options)
- 
-        self.goto(url)
-
-        self.page_soup = self._load_page_soup()
+        self.page_soup = None
 
 
     def _load_page_soup(self):
         return BeautifulSoup(self.page_source, features="lxml")
 
-    @property
-    def url(self):
-        return self._driver.current_url
 
-    @url.setter
-    def url(self, _):
-        raise TypeError("BaseSpyder.url is a read-only property")
-    
-    @property
-    def page_source(self):
-        return self._driver.page_source
+    def wait(self, time=None):
+        
+        if time is None:
+            time = self.sleep_time    
 
-    @page_source.setter
-    def page_source(self, _):
-        raise TypeError("BaseSpyder.page_source is a read-only property")
+        sleep(self.sleep_time)
 
-    def wait(self):
-        sleep(self.buffer_time)
 
-    def goto(self, url):
-        self._driver.get(url)
-        self.wait()
+    def goto(self, url, wait=False, wait_for=None):
+        """
+        Navigate to given URL. Note that some pages will not load all elements
+        even if driver thinks the page has been loaded. hence why there's a wait param
+        """
+        self._browser.get(url)
 
-    def refresh_page(self):
-        self._driver.refresh()
-        self.wait()
+        if wait:
+            self.wait(wait_for)
+
+
+    def refresh_page(self, wait=False, wait_for=None):
+        """
+        Refresh the page and reset local variables to get new page source.
+        """
+        self._browser.refresh()
+
+        if wait:
+            self.wait(wait_for)
 
         # refresh page source to get new changes
         self.page_soup = self._load_page_soup()
@@ -76,15 +73,51 @@ class BasicSpider:
 
         return formatted_time
 
-    def smooth_scroll(self, scroll_to, velocity):
+
+    def smooth_vscroll(self, scroll_to=None, velocity=10):
+        """
+        Slowly scroll to a given y coordinate. if scroll_to is not given,
+        then scroll down infinitely, but stop when the bottom is reached.
+        """
         pass
 
-    def instant_scroll(self, scroll_to):
+    def instant_vscroll(self, scroll_to):
+        """
+        Instantly scroll to a given y coordinate. if scroll_to is not given,
+        then scroll down to bottom of page.
+        """
+
+    def smooth_hscroll(self, scroll_to):
         pass
+
+    def instant_hscroll(self, scroll_to):
+        pass
+
 
     def slow_type(self, field, sentence, speed):
+        """
+        Slowly send text to a given input field
+        """
+
+
+    def select_from_combobox(self, combobox, selection):
+        """
+        Select an item from a combobox
+        """
         pass
 
-    def die(self):
-        print("Squashing the spyder...")
-        self._driver.quit()
+
+    def toggle_checkbox(self, checkbox):
+        pass
+        
+    def tick_checkbox(self, checkbox):
+        """
+        Raises _undefined_ exception if given checkbox is already ticked
+        """
+        pass
+
+    def untick_checkbox(self, checkbox):
+        """
+        Raises _undefined_ exception if given checkbox is already unticked
+        """
+        pass
