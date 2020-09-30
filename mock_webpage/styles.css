@@ -12,9 +12,21 @@ body {
 
 }
 
+.side-bar-container {
+    position: fixed;
+
+    width: 10%;
+
+    padding: 0.3em;
+
+    border: 1px dotted black;
+    border-radius: 3px;
+}
+
 .side-bar-display {
     padding: 1em;
-    position: fixed;
+
+    margin: 1em 0;
 
     background-color: blanchedalmond;
 
@@ -42,10 +54,13 @@ h1, h2 {
 
 .large-text {
     
-    margin: 1em;
+    margin: 1em auto;
+
     padding: 1em;
 
-    font-size: 60px;
+    width: 50%;
+
+    font-size: 30px;
     text-align: justify;
 
     background-color: aquamarine;

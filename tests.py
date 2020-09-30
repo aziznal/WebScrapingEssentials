@@ -36,10 +36,6 @@ def make_spider(cls):
     cls.spider = BasicSpider(base_url, options=options)
 
 
-def destroy_spider(cls):
-    cls.spider.die()
-
-
 class TestSpider(unittest.TestCase):
 
     @classmethod
@@ -47,42 +43,11 @@ class TestSpider(unittest.TestCase):
         make_spider(cls)
         make_test_urls(cls)
 
-    @classmethod
-    def tearDownClass(cls):
-        destroy_spider(cls)
-
     def setUp(self):
         self.spider.buffer_time = 1
         self.spider.goto(base_url)
 
-    def test_page_source(self):
-        self.assertIsNotNone(self.spider.page_source)
-        self.assertIsNotNone(self.spider.page_soup)
-
-    def test_goto(self):
-
-        # Increase wait while testing non-local url
-        self.spider.buffer_time = 3
-
-        for url in self.test_urls:
-            self.spider.goto(url)
-            self.assertEqual(self.spider.url, url)
-
-    def test_url_assignment(self):
-        with self.assertRaises(TypeError):
-            self.spider.url = "https://www.google.com"
-
-    def test_pagesource_assign(self):
-        with self.assertRaises(TypeError):
-            self.spider.page_source = "foobar"
-
-    def test_smooth_scroll(self):
-        pass
-
-    def test_instant_scroll(self):
-        pass
-
-    def test_slow_type(self):
+    def test_load_page(self):
         pass
 
 
