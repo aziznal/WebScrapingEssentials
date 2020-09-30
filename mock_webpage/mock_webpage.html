@@ -1,18 +1,92 @@
 <html>
 
-    <head>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
 
-    <body>
+<body>
+
+
+    <div class="side-bar-display">
+
+        <p id="page_offset_display">Page Y:</p>
+    </div>
+
+    <div class ="side-bar-display" style="margin-top: 7em;">
+        <button onclick="get_element_y('smooth-vertical', 'test')">
+            Get combobox element Y
+        </button>
+
+        <p id='test'>
+
+        </p>
+
+    </div>
+
+    <div class="main-container">
 
         <h1>Welcome to this mock html webpage</h1>
-        <h2>There's really not much to do here.</h2>
+        <h2>Not much todo here for a plain ol' human</h2>
 
-        <div>
-            <p>You could read some of the things that I wrote here if you want!</p>
+        <div id="bodies-of-text">
+            <div class="large-text">
+                This is a mock page with things put in place to test the functionality of my spider!
+            </div>
+
+            <div class="large-text">
+                I've intentionally put a lot of content here just to make the page vertically longer
+            </div>
+
+            <div class="large-text">
+                This section is all about having large bodies of text that fill up space.
+            </div>
+
+            <div class="large-text">
+                This is the last large body of text mean to just occupy veritcal space.
+            </div>
+
+        </div>
+        <!-- End of bodies of text -->
+
+        <div id="scrolling-tests">
+            <h1>Scrolling Tests</h1>
+
+            <div id="smooth-vertical" class="scroll-test">
+                Page should be smoothly scrolling to exactly this spot
+                <span id="smooth-vertical-current-y" style="margin-left: 30%;"></span>
+            </div>
+
+            <div id="instant-vertical" class="scroll-test">
+                Page should have instantly scrolled to exactly this spot
+                <span id="instant-vertical-current-y" style="margin-left: 30%;"></span>
+            </div>
+
+        </div>
+        <!-- End of Scrolling Tests -->
+
+        <div id="combobox-tests">
+            <h1>Combobox Tests</h1>
+
+            <select class="combobox" id="test-combobox">
+                <option>Carrot</option>
+                <option>Urchin</option>
+                <option>Nuts</option>
+                <option>Tomato</option>
+            </select>
+
+        </div>
+        <!-- End of Combobox Tests -->
+
+        <div id="debug-section">
+            <h1>Debug Section</h1>
+
         </div>
 
-    </body>
+    </div>
+    <!-- End of main container -->
+
+
+</body>
 
 </html>

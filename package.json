@@ -2,9 +2,10 @@
   "name": "base-spyder",
   "version": "1.0.0",
   "description": "Simple interface for selenium.webdriver",
-  "main": "",
+  "main": "index.js",
   "scripts": {
-    "tests": "coverage run --omit=venv/* tests.py"
+    "tests": "coverage run --omit=venv/* tests.py",
+    "serve": "lite-server mock_webpage/mock_webpage.html"
   },
   "repository": {
     "type": "git",
