@@ -39,7 +39,7 @@ body {
     display: flex;
     flex-direction: column;
     
-    width: 75%;
+    width: 60%;
     margin: auto;
 
     background-color: rgb(210, 255, 232);
@@ -54,14 +54,14 @@ h1, h2 {
 
 .large-text {
     
-    margin: 1em auto;
+    margin: 3em auto;
 
     padding: 1em;
 
     width: 50%;
 
-    font-size: 30px;
-    text-align: justify;
+    font-size: 20px;
+    text-align: center;
 
     background-color: aquamarine;
 
