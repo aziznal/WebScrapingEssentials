@@ -106,3 +106,22 @@ h1, h2 {
 
     border: 2px solid black;
 }
+
+#hidden-until-scroll-test {
+
+    margin: 3em auto;
+    padding: 1em;
+
+    width: 50%;
+
+    background-color: rgb(201, 104, 201);
+    color: rgb(170, 255, 159);
+
+    font-weight: bold;
+    font-size: 2em;
+
+    text-align: center;
+    
+    border-radius: 50px;
+
+}

@@ -37,6 +37,23 @@ class BasicSpider:
         return y_offset
 
 
+    def get_element_inner_html(self, element_id=None, element_class=None):
+        """
+        return the innerHTML of given element.
+        if element is to be found by class name, then the innerHTML of the first element
+        that matches the given class name will be returned.
+        """
+        if element_id is not None:
+            return self._browser.execute_script(f'return document.getElementById("{element_id}").innerHTML')
+
+        elif element_class is not None:
+            return self._browser.execute_script(f'return document.getElementsByClassName("{element_class}")[0].innerHTML')
+
+        else:
+            msg = "Pass either element_id or element_class, but not both"
+            raise ParameterConflictError(msg)
+
+
     def wait(self, time=None):
         
         if time is None:

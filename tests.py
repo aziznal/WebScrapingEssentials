@@ -53,13 +53,31 @@ class TestSpider(unittest.TestCase):
         self.spider.buffer_time = 1
         self.spider.goto(base_url)
 
+        self.spider.instant_vscroll(0)
+
+
+    def test_get_element_inner_html(self):
+        element_id = element_class = "page-title"
+        expected_innerHTML = "Welcome to this mock html webpage"
+
+        # Test using element id as search parameter
+        actual_innerHTML = self.spider.get_element_inner_html(element_id=element_id)
+        self.assertEqual(actual_innerHTML, expected_innerHTML)
+
+        # reset actual_innerHTML
+        actual_innerHTML = None
+
+        # Test using element class name as parameter
+        actual_innerHTML = self.spider.get_element_inner_html(element_class=element_class)
+        self.assertEqual(actual_innerHTML, expected_innerHTML)
+
 
     def test_smooth_vscroll_down(self):
         """
-        the spider must scroll the exact amount of pixels in the given time.
+        Scroll from y = 0 down to 905. must stop at exactly given y.
         """
 
-        expected_y_offset = 905     # Pixels
+        expected_y_offset = 906     # Pixels
         given_time = 10   # Seconds
 
         self.spider.smooth_vscroll_down(scroll_to=expected_y_offset, approx_time=given_time)
@@ -67,14 +85,11 @@ class TestSpider(unittest.TestCase):
         current_y = self.spider.get_page_y_offset()
 
         self.assertEqual(expected_y_offset, current_y)
-
+    
     def test_smooth_vscroll_up(self):
         """
-        the spider must scroll the exact amount of pixels in the given time.
+        Spider will scroll from y = 500 upwards
         """
-
-        # Start from with y offset = 500
-        
         self.spider.instant_vscroll(500)
 
         expected_y_offset = 1     # Pixels
@@ -87,12 +102,25 @@ class TestSpider(unittest.TestCase):
         self.assertEqual(expected_y_offset, current_y)
 
 
-    def teest_smooth_vscroll_to_element(self):
+    def test_smooth_vscroll_to_element(self):
         """
         Smooth scroll to an element that will only load once a certain y
         threshold has been passed. Check this element's innerHTML for validation.
         """
-        self.assertEqual(1, 0)
+        element_y = 2100
+        element_id = "hidden-element"
+
+        expected_starting_html = "invisible"
+        expected_final_html = "visible"
+
+        starting_html = self.spider.get_element_inner_html(element_id)
+        self.assertEqual(starting_html, expected_starting_html)
+
+        self.spider.instant_vscroll(element_y)
+        sleep(0.05) # time for item to load
+        final_html = self.spider.get_element_inner_html(element_id)
+
+        self.assertEqual(final_html, expected_final_html)
 
 
     def test_instant_vscroll(self):

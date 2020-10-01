@@ -1,6 +1,5 @@
 
-
-const get_page_y = () => {
+const getPageY = () => {
     /// This returns distance scrolled from the top of the page
 
     let page_y = window.pageYOffset;
@@ -9,9 +8,9 @@ const get_page_y = () => {
 
 }
 
-const display_page_y = (element_id) => {
+const displayPageY = (element_id) => {
 
-    let page_y = get_page_y();
+    let page_y = getPageY();
 
     let element = document.getElementById(element_id);
 
@@ -19,12 +18,12 @@ const display_page_y = (element_id) => {
 
 }
 
-// Y Page Offset Counter
+// ### Y Page Offset Counter
 (() => {
-    setInterval(() => display_page_y('page_offset_display'), 10);
+    setInterval(() => displayPageY('page_offset_display'), 10);
 })();
 
-const get_element_y = (element_id, display_to) => {
+const getElementY = (element_id, display_to) => {
     
     const element = document.getElementById(element_id);
     let element_rect = element.getBoundingClientRect();
@@ -36,7 +35,32 @@ const get_element_y = (element_id, display_to) => {
     return element_y;
 }
 
+// ### Scroll tests - y offset displays
 (() => {
-    setInterval(() => get_element_y('smooth-vertical', 'smooth-vertical-current-y'), 1);
-    setInterval(() => get_element_y('instant-vertical', 'instant-vertical-current-y'), 1);
+    setInterval(() => getElementY('smooth-vertical', 'smooth-vertical-current-y'), 1);
+    setInterval(() => getElementY('instant-vertical', 'instant-vertical-current-y'), 1);
+})();
+
+
+const showElementAtHeight = (element_id, height) => {
+    /// Hide given element until the given height is reached (by scrolling to it)
+    element = document.getElementById(element_id);
+    element.style.visibility = "hidden";
+
+    // Check for correct height every ten seconds
+    let timer = setInterval(() => {
+        let height_passed = getPageY() >= height;
+
+        if (height_passed){
+            element.style.visibility = "visible";
+            element.innerHTML = "visible"
+            clearInterval(timer);
+        }
+
+    }, 10);
+}
+
+// Set to show element after certain height is passed
+(() => {
+    setTimeout(() => showElementAtHeight('hidden-element', 2000), 1);
 })();
