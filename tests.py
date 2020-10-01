@@ -77,8 +77,8 @@ class TestSpider(unittest.TestCase):
         Scroll from y = 0 down to 905. must stop at exactly given y.
         """
 
-        expected_y_offset = 906     # Pixels
-        given_time = 10   # Seconds
+        expected_y_offset = 157     # Pixels
+        given_time = 2   # Seconds
 
         self.spider.smooth_vscroll_down(scroll_to=expected_y_offset, approx_time=given_time)
 
@@ -88,12 +88,12 @@ class TestSpider(unittest.TestCase):
     
     def test_smooth_vscroll_up(self):
         """
-        Spider will scroll from y = 500 upwards
+        Spider will scroll from y = 157 upwards
         """
-        self.spider.instant_vscroll(500)
+        self.spider.instant_vscroll(157)
 
         expected_y_offset = 1     # Pixels
-        given_time = 10   # Seconds
+        given_time = 2   # Seconds
 
         self.spider.smooth_vscroll_up(scroll_to=expected_y_offset, approx_time=given_time)
 
@@ -101,13 +101,12 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(expected_y_offset, current_y)
 
-
-    def test_smooth_vscroll_to_element(self):
+    def test_vscroll_to_element(self):
         """
         Smooth scroll to an element that will only load once a certain y
         threshold has been passed. Check this element's innerHTML for validation.
         """
-        element_y = 2100
+        element_y = 2300
         element_id = "hidden-element"
 
         expected_starting_html = "invisible"
@@ -122,7 +121,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(final_html, expected_final_html)
 
-
     def test_instant_vscroll(self):
         """
         Spider should instantly arrive to the given y position.
@@ -136,12 +134,40 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(current_y, expected_y)
 
-    def teest_instant_vscroll_to_element(self):
-        self.assertEqual(1, 0)
 
-    
-    def teest_slow_type(self):
-        self.assertEqual(1, 0)
+    def test_slow_type_with_id(self):
+
+        # REFACTOR
+        element_id = "slow-input-field"
+        results_button_id = "slow-results-button"
+        result_field_id = "slow-input-results"
+        text = "This text is being typed in slowly"        
+
+        self.spider.instant_vscroll(3200)
+        self.spider.slow_type(sentence=text, field_id=element_id)
+
+        self.spider.click_button(results_button_id)
+        sleep(0.05)
+
+        results = self.spider.get_element_inner_html(result_field_id)
+        self.assertEqual(text, results)
+
+    def test_slow_type_with_WebElement(self):
+        
+        # REFACTOR
+        field = self.spider._browser.find_element_by_id("slow-input-field")
+        results_button_id = "slow-results-button"
+        result_field_id = "slow-input-results"
+        text = "This text is being typed in slowly"
+
+        self.spider.instant_vscroll(3200)
+        self.spider.slow_type(sentence=text, field=field)
+
+        self.spider.click_button(results_button_id)
+        sleep(0.05)
+
+        results = self.spider.get_element_inner_html(result_field_id)
+        self.assertEqual(text, results)
 
 
     def teest_select_from_combobox(self):

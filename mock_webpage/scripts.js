@@ -42,7 +42,7 @@ const getElementY = (element_id, display_to) => {
 })();
 
 
-const showElementAtHeight = (element_id, height) => {
+const showOnHeightReached = (element_id, height) => {
     /// Hide given element until the given height is reached (by scrolling to it)
     element = document.getElementById(element_id);
     element.style.visibility = "hidden";
@@ -62,5 +62,16 @@ const showElementAtHeight = (element_id, height) => {
 
 // Set to show element after certain height is passed
 (() => {
-    setTimeout(() => showElementAtHeight('hidden-element', 2000), 1);
+    setTimeout(() => showOnHeightReached('hidden-element', 2000), 1);
 })();
+
+
+const showSlowInputResult = () => {
+    let input_field = document.getElementById("slow-input-field");
+    let result_output = document.getElementById("slow-input-results")
+
+    inputted_text = input_field.value
+    console.log(inputted_text);
+    result_output.innerHTML = inputted_text
+
+}

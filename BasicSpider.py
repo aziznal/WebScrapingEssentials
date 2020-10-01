@@ -1,9 +1,11 @@
 from selenium import webdriver
 from time import sleep, perf_counter
+import random
 from datetime import datetime
 from bs4 import BeautifulSoup
 
 from selenium.webdriver.firefox.options import Options
+from selenium.common import exceptions as sel_exception
 
 from custom_exceptions import *
 
@@ -211,11 +213,58 @@ class BasicSpider:
     def instant_hscroll(self, scroll_to):
         pass
 
+    
+    def _get_rand_float(self, range_=(0, 1)):
+        """
+        returns a random float number within given range
+        """
+        return random.uniform(*range_)
 
-    def slow_type(self, field, sentence, speed):
+
+    def slow_type(self, sentence, speed=0, field_id=None, field=None, speed_range=(0.05, 0.25)):
         """
-        Slowly send text to a given input field
+        Slowly send text to a given input field.
+
+        :Params:
+
+        sentence: (str) text to send to field
+
+        speed: (int) how quick to send text
+
+        field_id: (str) id of input field.
+
+        field: (selenium.WebElement) pass instead of field_id.
         """
+
+        range_ = speed_range
+
+        if field is not None:
+            for letter in sentence:
+                field.send_keys(letter)
+                sleep(self._get_rand_float(range_))
+
+        elif field_id is not None:
+            # Raises NoSuchElementException
+            field = self._browser.find_element_by_id(field_id)
+            
+            for letter in sentence:
+                field.send_keys(letter)
+                sleep(self._get_rand_float(range_))
+
+        else:
+            raise ParameterConflictError("Must pass either 'field' OR 'field_id', but not both.")
+
+
+    def click_button(self, button_id=None, button=None):
+        if button_id is not None:
+            button = self._browser.execute_script(f'return document.getElementById("{button_id}")')
+            button.click()
+
+        elif button is not None:
+            button.click()
+
+        else:
+            raise ParameterConflictError("Must pass either 'button_id' OR 'button', but not both")
 
 
     def select_from_combobox(self, combobox, selection):
