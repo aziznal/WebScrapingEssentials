@@ -15,7 +15,7 @@ body {
 .side-bar-container {
     position: fixed;
 
-    width: 10%;
+    width: 17%;
 
     padding: 0.3em;
 
@@ -32,6 +32,29 @@ body {
 
     border: 1px solid black;
     border-radius: 10px;
+}
+
+.test-check {
+
+    display: block;
+
+    width: 100%;
+    border-bottom: 1px solid rgb(223, 223, 223);
+
+    margin: 0.3em;
+    margin-left: -0.3em;
+
+    /* font-size: 0.7em; */
+}
+
+.tick-img {
+    width: 10%;
+    height: auto;
+    
+    margin-bottom: -0.5em;
+
+    opacity: 0;
+
 }
 
 .main-container {

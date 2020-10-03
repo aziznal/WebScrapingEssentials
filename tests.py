@@ -44,6 +44,8 @@ class TestSpider(unittest.TestCase):
         make_spider(cls)
         make_test_urls(cls)
 
+        cls.checked_tests = []
+
     @classmethod
     def tearDownClass(cls):
         sleep(3)
@@ -54,6 +56,19 @@ class TestSpider(unittest.TestCase):
         self.spider.goto(base_url)
 
         self.spider.instant_vscroll(0)
+
+        self.check_tests()
+
+    def check_tests(self):
+        for test_id in self.checked_tests:
+            self.pass_test(test_id)
+
+    def pass_test(self, element_id):
+        """
+        Check a tickmark on the mockwebpage
+        """
+        element = self.spider._browser.find_element_by_id(element_id)
+        element.click()
 
 
     def test_get_element_inner_html(self):
@@ -71,6 +86,9 @@ class TestSpider(unittest.TestCase):
         actual_innerHTML = self.spider.get_element_inner_html(element_class=element_class)
         self.assertEqual(actual_innerHTML, expected_innerHTML)
 
+        self.pass_test("test-get-inner-html")
+        self.checked_tests.append("test-get-inner-html")
+
 
     def test_smooth_vscroll_down(self):
         """
@@ -85,6 +103,9 @@ class TestSpider(unittest.TestCase):
         current_y = self.spider.get_page_y_offset()
 
         self.assertEqual(expected_y_offset, current_y)
+
+        self.pass_test('test-vscroll-down')
+        self.checked_tests.append('test-vscroll-down')
     
     def test_smooth_vscroll_up(self):
         """
@@ -100,6 +121,9 @@ class TestSpider(unittest.TestCase):
         current_y = self.spider.get_page_y_offset()
 
         self.assertEqual(expected_y_offset, current_y)
+
+        self.pass_test("test-vscroll-up")
+        self.checked_tests.append("test-vscroll-up")
 
     def test_vscroll_to_element(self):
         """
@@ -121,6 +145,9 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(final_html, expected_final_html)
 
+        self.pass_test("test-vscroll-to-element")
+        self.checked_tests.append("test-vscroll-to-element")
+
     def test_instant_vscroll(self):
         """
         Spider should instantly arrive to the given y position.
@@ -133,6 +160,9 @@ class TestSpider(unittest.TestCase):
         current_y = self.spider.get_page_y_offset()
 
         self.assertEqual(current_y, expected_y)
+
+        self.pass_test("test-instant-vscroll")
+        self.checked_tests.append("test-instant-vscroll")
 
 
     def test_slow_type_with_id(self):
@@ -152,6 +182,9 @@ class TestSpider(unittest.TestCase):
         results = self.spider.get_element_inner_html(result_field_id)
         self.assertEqual(text, results)
 
+        self.pass_test("test-slow-type-id")
+        self.checked_tests.append("test-slow-type-id")
+
     def test_slow_type_with_WebElement(self):
         
         # REFACTOR
@@ -169,18 +202,21 @@ class TestSpider(unittest.TestCase):
         results = self.spider.get_element_inner_html(result_field_id)
         self.assertEqual(text, results)
 
+        self.pass_test("test-slow-type-webelement")
+        self.checked_tests.append("test-slow-type-webelement")
 
-    def teest_select_from_combobox(self):
+
+    def unimplemented__test_select_from_combobox(self):
         self.assertEqual(1, 0)
 
 
-    def teest_toggle_checkbox(self):
+    def unimplemented__test_toggle_checkbox(self):
         self.assertEqual(1, 0)
 
-    def teest_tick_checkbox(self):
+    def unimplemented__test_tick_checkbox(self):
         self.assertEqual(1, 0)
 
-    def teest_untick_checkbox(self):
+    def unimplemented__test_untick_checkbox(self):
         self.assertEqual(1, 0)
 
 

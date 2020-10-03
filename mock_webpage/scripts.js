@@ -75,3 +75,12 @@ const showSlowInputResult = () => {
     result_output.innerHTML = inputted_text
 
 }
+
+const passTest = (parent_element) => {
+
+    // console.log(parent_element.style.opacity);
+    // parent_element.style.opacity = '100%';
+
+    parent_element.children[0].style.opacity = 1;
+
+}
