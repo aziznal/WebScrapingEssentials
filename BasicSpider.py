@@ -33,6 +33,25 @@ class BasicSpider:
         return BeautifulSoup(self.page_source, features="lxml")
 
 
+    def _confirm_positive_integer(self, value, include_zero=False):
+        """
+        Check given value to be a positive integer
+        """
+        try:
+            # Positive
+            if include_zero:
+                assert value >= 0
+
+            else:
+                assert value > 0
+
+            # Integer
+            assert type(value) == type(1)   # Integer
+        
+        except AssertionError:
+            raise ValueError("value must be a positive integer")
+
+
     def get_page_y_offset(self):
         y_offset = self._browser.execute_script("return window.pageYOffset")
 
@@ -100,55 +119,59 @@ class BasicSpider:
         return formatted_time
 
 
-    def smooth_vscroll_down(self, scroll_to=None, scroll_by=None, approx_time=3, ppl=2):
+    def smooth_vscroll_down_to(self, scroll_to, speed=1):
         """
-        Slowly scroll to a given y coordinate. if y is not given,
-        then scroll down infinitely, but stop when the bottom is reached.
-
+        Smoothly scroll down to given position
         :Paramaters
 
         scroll_to: (int) y position to scroll to.
 
-        scroll_by: (int) use instead of scroll_to
-
-        approx_time: (int) amount of seconds to scroll in (note: this varies a lot)
-
-        ppl: (int) pixels scrolled per loop (effective speed)
+        speed: (int) pixels scrolled per loop (effective speed)
         """
-
-        err_msg = "Must pass either 'scroll_to' or 'scroll_by'"
-
-        if scroll_to and scroll_by:
-            raise ParameterConflictError(err_msg + ", but not both.")
         
-        if scroll_to is None and scroll_by is None:
-            raise ParameterConflictError(err_msg)
-        
-        if scroll_to is not None:
+        self._confirm_positive_integer(scroll_to)
+        self._confirm_positive_integer(speed)
+
+        current_y = self.get_page_y_offset()
+
+        if current_y >= scroll_to:
+            msg = "'scroll_to' >= current y offset. consider using smooth_vscroll_up_to instead."
+            raise BadScrollPositionException(msg)
+
+        while current_y < scroll_to:
             
-            current_y = self.get_page_y_offset()
-
-            if current_y >= scroll_to:
-                msg = "'scroll_to' >= current y offset. consider using smooth_vscroll_up instead."
-                raise BadScrollPositionException(msg)
-
-            speed = scroll_to / approx_time
-            time_interval = 1 / speed
-
-            while current_y < scroll_to:
-                
-                current_y += ppl
-                self.instant_vscroll(current_y)
-                
-                sleep(time_interval)
-
-            # When less than ppl pixels remain, jump to target
-            self.instant_vscroll(scroll_to)
-
-        elif scroll_by is not None:
-            pass
+            current_y += speed
+            self.instant_vscroll_to(current_y)
+            
+        # Jump to target when few enough pixels remain
+        self.instant_vscroll_to(scroll_to)
     
-    def smooth_vscroll_up(self, scroll_to=None, scroll_by=None, approx_time=3, ppl=2):
+    def smooth_vscroll_down_by(self, scroll_by, speed=1):
+        """
+        Scroll down by the given amount of pixels at the given speed
+
+        :Parameters:
+
+        scroll_by: (int) amount of pixels to scroll
+
+        speed: (int) amount of pixels scrolled per loop
+        """
+        
+        self._confirm_positive_integer(scroll_by)
+        self._confirm_positive_integer(speed)
+
+        current_y = self.get_page_y_offset()
+        final_y = current_y + scroll_by
+
+        while current_y < final_y:
+            current_y += speed
+            self.instant_vscroll_to(current_y)
+
+        # To avoid inaccuracies from numbers that don't factor into eachother
+        self.instant_vscroll_to(final_y)
+
+
+    def smooth_vscroll_up_to(self, scroll_to, speed=1):
         """
         Slowly scroll to a given y coordinate. if y is not given,
         then scroll down infinitely, but stop when the bottom is reached.
@@ -157,54 +180,81 @@ class BasicSpider:
 
         scroll_to: (int) y position to scroll to.
 
-        scroll_by: (int) use instead of scroll_to
-
-        approx_time: (int) amount of seconds to scroll in (note: this varies a lot)
-
-        ppl: (int) pixels scrolled per loop (effective speed)
+        speed: (int) pixels scrolled per loop (effective speed)
         """
-
-        err_msg = "Must pass either 'scroll_to' or 'scroll_by'"
-
-        if scroll_to and scroll_by:
-            raise ParameterConflictError(err_msg + ", but not both.")
-        
-        if scroll_to is None and scroll_by is None:
-            raise ParameterConflictError(err_msg)
-        
-        if scroll_to is not None:
             
-            current_y = self.get_page_y_offset()
+        self._confirm_positive_integer(scroll_to, include_zero=True)
+        self._confirm_positive_integer(speed)
 
-            if current_y < scroll_to:
-                msg = "'scroll_to' < current y offset. consider using smooth_vscroll_down instead?"
-                raise BadScrollPositionException(msg)
+        current_y = self.get_page_y_offset()
 
-            speed = scroll_to / approx_time
-            # time_interval = 1 / speed
-            time_interval = 0.01
-
-            while current_y > scroll_to:
-                
-                current_y -= ppl
-                self.instant_vscroll(current_y)
-                
-                sleep(time_interval)
-
-            # When less than ppl pixels remain, jump to target
-            self.instant_vscroll(scroll_to)
+        if current_y < scroll_to:
+            msg = "'scroll_to' < current y offset. consider using smooth_vscroll_down_to instead?"
+            raise BadScrollPositionException(msg)
 
 
-        elif scroll_by is not None:
-            pass
+        while current_y > scroll_to:            
+            current_y -= speed
+            self.instant_vscroll_to(current_y)
 
-    def instant_vscroll(self, scroll_to):
+        # When fewer than 'speed' pixels remain, jump to target
+        self.instant_vscroll_to(scroll_to)
+
+    def smooth_vscroll_up_by(self, scroll_by, speed=1):
         """
-        Instantly scroll to a given y coordinate. if scroll_to is not given,
-        then scroll down to bottom of page.
+        Scroll up by the given amount of pixels at the given speed
+
+        :Parameters:
+
+        scroll_by: (int) amount of pixels to scroll
+
+        speed: (int) amount of pixels scrolled per loop
         """
+        
+        self._confirm_positive_integer(scroll_by)
+        self._confirm_positive_integer(speed)
+
+        current_y = self.get_page_y_offset()
+        final_y = current_y - scroll_by if current_y > scroll_by else 0
+
+        while current_y > final_y:
+            current_y -= speed
+            self.instant_vscroll_to(current_y)
+
+        # To avoid inaccuracies from numbers that don't factor into eachother
+        self.instant_vscroll_to(final_y)
+
+
+    def instant_vscroll_to(self, scroll_to):
+        """
+        Instantly scroll to a given y coordinate
+        """
+        try:
+            assert scroll_to >= 0
+        
+        except AssertionError:
+            raise ValueError("scroll_to must be >= 0")
 
         self._browser.execute_script(f"window.scrollTo(0, {scroll_to})")
+
+    def instant_vscroll_by(self, scroll_by):
+        """
+        Instantly vertically scroll by given amount
+        """
+        self._browser.execute_script(f"window.scrollBy(0, {scroll_by})")
+
+
+    def mousewheel_vscroll_to(self, scroll_to):
+        """
+        Scroll to given position while imitating a human using a mousewheel
+        """
+        pass
+
+    def mousewheel_vscroll_by(self, scroll_to):
+        """
+        Scroll to given position while imitating a human using a mousewheel
+        """
+        pass
 
 
     def smooth_hscroll(self, scroll_to):

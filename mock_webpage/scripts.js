@@ -60,7 +60,7 @@ const showOnHeightReached = (element_id, height) => {
     }, 10);
 }
 
-// Set to show element after certain height is passed
+// ### Set to show element after certain height is passed
 (() => {
     setTimeout(() => showOnHeightReached('hidden-element', 2000), 1);
 })();
