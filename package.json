@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tests": "coverage run --omit=venv/* tests.py",
+    "qtests": "coverage run --omit=venv/* quick_tests.py",
     "serve": "lite-server mock_webpage/mock_webpage.html"
   },
   "repository": {

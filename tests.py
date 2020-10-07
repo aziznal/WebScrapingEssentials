@@ -341,6 +341,8 @@ class TestSpider(unittest.TestCase):
         a given button has been pressed.
         """
 
+        # REFACTOR
+
         button_id = "click-test-button"
         button_output = "button-onclick-output"
 
@@ -360,6 +362,8 @@ class TestSpider(unittest.TestCase):
         Spider will retrieve text which will have changed once
         a given button has been pressed.
         """
+
+        # REFACTOR
 
         button_id = "click-test-button"
         button_output = "button-onclick-output"
