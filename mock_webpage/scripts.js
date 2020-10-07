@@ -84,3 +84,11 @@ const passTest = (parent_element) => {
     parent_element.children[0].style.opacity = 1;
 
 }
+
+const testButtonOutput = () => {
+
+    const output_element = document.getElementById("button-onclick-output")
+
+    output_element.innerHTML = "Button has been clicked!"
+    
+}

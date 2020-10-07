@@ -211,6 +211,9 @@ class TestSpider(unittest.TestCase):
         instantly scroll to an element that will change once a certain y
         threshold has been passed. Check this element's innerHTML for validation.
         """
+
+        # FIXME: Implement test without giving element y, instead give only element
+
         element_y = 2300
         element_id = "hidden-element"
 
@@ -332,8 +335,47 @@ class TestSpider(unittest.TestCase):
         self.checked_tests.append("test-slow-type-webelement")
 
 
-    def unimplemented__test_click_button(self):
-        pass
+    def test_click_button(self):
+        """
+        Spider will retrieve text which will have changed once
+        a given button has been pressed.
+        """
+
+        button_id = "click-test-button"
+        button_output = "button-onclick-output"
+
+        starting_text = "Button has not been clicked yet"
+        expected_text = "Button has been clicked!"
+
+        self.spider.click_button(button_id=button_id)
+        actual_text = self.spider.get_element_inner_html(button_output)
+
+        self.assertEqual(expected_text, actual_text)
+
+        self.pass_test("test-click-button-id")
+        self.checked_tests.append("test-click-button-id")
+        
+    def test_click_button_webElement(self):
+        """
+        Spider will retrieve text which will have changed once
+        a given button has been pressed.
+        """
+
+        button_id = "click-test-button"
+        button_output = "button-onclick-output"
+
+        starting_text = "Button has not been clicked yet"
+        expected_text = "Button has been clicked!"
+
+        button_as_element = self.spider._browser.find_element_by_id(button_id)
+        self.spider.click_button(button=button_as_element)
+
+        actual_text = self.spider.get_element_inner_html(button_output)
+
+        self.assertEqual(expected_text, actual_text)
+
+        self.pass_test("test-click-button-webelement")
+        self.checked_tests.append("test-click-button-webelement")
 
 
     def unimplemented__test_select_from_combobox(self):

@@ -67,7 +67,14 @@
             </span>
 
             <span class="separator small-margins"></span>
+            
+            <span class="test-check" id="test-click-button-id" onclick="passTest(this)">
+                click_button_using_id <img class="tick-img" src="tick.png">
+            </span>
 
+            <span class="test-check" id="test-click-button-webelement" onclick="passTest(this)">
+                click_button_using_webElement <img class="tick-img" src="tick.png">
+            </span>
 
         </div>
 
@@ -172,11 +179,24 @@
             <h1>Slow Input Test</h1>
             <input type="text" id="slow-input-field">
 
-            <button id="slow-results-button" onclick="showSlowInputResult()" style="display:block; margin: 1em auto;">
+            <button id="slow-results-button" onclick="showSlowInputResult()">
                 Click to submit input
             </button>
 
             <p id="slow-input-results"></p>
+        </div>
+
+        <span class="separator"></span>
+
+        <div id="button-click-test">
+            <h1>Button Click Test</h1>
+
+            <button id="click-test-button" onclick="testButtonOutput()">
+                Clicky Clicky
+            </button>
+
+            <span class="centered-block" id="button-onclick-output">Button has not been clicked yet</span>
+
         </div>
 
     </div>
