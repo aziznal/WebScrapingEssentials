@@ -48,7 +48,11 @@ class TestSpider(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        sleep(3)
+
+        for test_id in cls.checked_tests:
+            cls.pass_test(cls, test_id)
+
+        sleep(5)
         cls.spider._browser.close()
         
     def setUp(self):
@@ -56,8 +60,6 @@ class TestSpider(unittest.TestCase):
         self.spider.goto(base_url)
 
         self.spider.instant_vscroll_to(0)
-
-        self.check_tests()
 
 
     def check_tests(self):
@@ -87,7 +89,6 @@ class TestSpider(unittest.TestCase):
         actual_innerHTML = self.spider.get_element_inner_html(element_class=element_class)
         self.assertEqual(actual_innerHTML, expected_innerHTML)
 
-        self.pass_test("test-get-inner-html")
         self.checked_tests.append("test-get-inner-html")
 
 
@@ -122,7 +123,6 @@ class TestSpider(unittest.TestCase):
 
         self._assert_valueError_raised(self.spider.smooth_vscroll_down_to)
 
-        self.pass_test('test-vscroll-down-to')
         self.checked_tests.append('test-vscroll-down-to')
     
     def test_smooth_vscroll_up_to(self):
@@ -142,7 +142,6 @@ class TestSpider(unittest.TestCase):
 
         self._assert_valueError_raised(self.spider.smooth_vscroll_up_to)
 
-        self.pass_test("test-vscroll-up-to")
         self.checked_tests.append("test-vscroll-up-to")
 
 
@@ -166,7 +165,6 @@ class TestSpider(unittest.TestCase):
 
         self._assert_valueError_raised(self.spider.smooth_vscroll_down_by)
 
-        self.pass_test("test-vscroll-down-by")
         self.checked_tests.append("test-vscroll-down-by")
 
     def test_smooth_scroll_up_by(self):
@@ -202,7 +200,6 @@ class TestSpider(unittest.TestCase):
 
         self._assert_valueError_raised(self.spider.smooth_vscroll_up_by)
 
-        self.pass_test("test-vscroll-up-by")
         self.checked_tests.append("test-vscroll-up-by")
 
 
@@ -229,7 +226,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(final_html, expected_final_html)
 
-        self.pass_test("test-vscroll-to-element")
         self.checked_tests.append("test-vscroll-to-element")
 
 
@@ -246,7 +242,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(current_y, expected_y)
 
-        self.pass_test("test-instant-vscroll-to")
         self.checked_tests.append("test-instant-vscroll-to")
 
     def test_instant_vscroll_by(self):
@@ -290,7 +285,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(expected_y, actual_y)
 
-        self.pass_test('test-instant-vscroll-by')
         self.checked_tests.append('test-instant-vscroll-by')
 
 
@@ -311,7 +305,6 @@ class TestSpider(unittest.TestCase):
         results = self.spider.get_element_inner_html(result_field_id)
         self.assertEqual(text, results)
 
-        self.pass_test("test-slow-type-id")
         self.checked_tests.append("test-slow-type-id")
 
     def test_slow_type_with_WebElement(self):
@@ -331,7 +324,6 @@ class TestSpider(unittest.TestCase):
         results = self.spider.get_element_inner_html(result_field_id)
         self.assertEqual(text, results)
 
-        self.pass_test("test-slow-type-webelement")
         self.checked_tests.append("test-slow-type-webelement")
 
 
@@ -354,7 +346,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(expected_text, actual_text)
 
-        self.pass_test("test-click-button-id")
         self.checked_tests.append("test-click-button-id")
         
     def test_click_button_webElement(self):
@@ -378,7 +369,6 @@ class TestSpider(unittest.TestCase):
 
         self.assertEqual(expected_text, actual_text)
 
-        self.pass_test("test-click-button-webelement")
         self.checked_tests.append("test-click-button-webelement")
 
 
