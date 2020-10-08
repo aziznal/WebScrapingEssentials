@@ -244,23 +244,23 @@ class BasicSpider:
         self._browser.execute_script(f"window.scrollBy(0, {scroll_by})")
 
 
-    def mousewheel_vscroll_to(self, scroll_to):
+    def _unimplemented__mousewheel_vscroll_to(self, scroll_to):
         """
         Scroll to given position while imitating a human using a mousewheel
         """
         pass
 
-    def mousewheel_vscroll_by(self, scroll_to):
+    def _unimplemented__mousewheel_vscroll_by(self, scroll_to):
         """
         Scroll to given position while imitating a human using a mousewheel
         """
         pass
 
 
-    def smooth_hscroll(self, scroll_to):
+    def _unimplemented__smooth_hscroll(self, scroll_to):
         pass
 
-    def instant_hscroll(self, scroll_to):
+    def _unimplemented__instant_hscroll(self, scroll_to):
         pass
 
     
@@ -317,23 +317,23 @@ class BasicSpider:
             raise ParameterConflictError("Must pass either 'button_id' OR 'button', but not both")
 
 
-    def select_from_combobox(self, combobox, selection):
+    def _unimplemented__select_from_combobox(self, combobox, selection):
         """
         Select an item from a combobox
         """
         pass
 
 
-    def toggle_checkbox(self, checkbox):
+    def _unimplemented__toggle_checkbox(self, checkbox):
         pass
         
-    def tick_checkbox(self, checkbox):
+    def _unimplemented__tick_checkbox(self, checkbox):
         """
         Raises _undefined_ exception if given checkbox is already ticked
         """
         pass
 
-    def untick_checkbox(self, checkbox):
+    def _unimplemented__untick_checkbox(self, checkbox):
         """
         Raises _undefined_ exception if given checkbox is already unticked
         """
