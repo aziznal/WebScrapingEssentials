@@ -52,6 +52,13 @@ class BasicSpider:
             raise ValueError("value must be a positive integer")
 
 
+    def _get_rand_float(self, range_=(0, 1)):
+        """
+        returns a random float number within given range
+        """
+        return random.uniform(*range_)
+
+
     def get_page_y_offset(self):
         y_offset = self._browser.execute_script("return window.pageYOffset")
 
@@ -243,18 +250,61 @@ class BasicSpider:
         """
         self._browser.execute_script(f"window.scrollBy(0, {scroll_by})")
 
+    
+    def _mousewheel_vscroll_datapoints(self):
+        """
+        this is a generator that yields (point_i, point_i+1) from static data
+        """
+        # data = [0, 0, 0, 0, 2, 1, 14, 45, 70, 120, 49, 36, 16, 3, 0, 0, 0, 0]
 
-    def _unimplemented__mousewheel_vscroll_to(self, scroll_to):
-        """
-        Scroll to given position while imitating a human using a mousewheel
-        """
-        pass
+        data = list(range(0, 45, 10))
+        data += data[::-1]
 
-    def _unimplemented__mousewheel_vscroll_by(self, scroll_to):
+        for i, p in enumerate(data):
+            if i == len(data) - 1:
+                break
+
+            else:
+                yield data[i], data[i + 1]
+
+    def _mousewheel_vscroll(self, smoothness=3):
         """
-        Scroll to given position while imitating a human using a mousewheel
+        return points which browser will scroll to
         """
-        pass
+
+        if smoothness <= 0:
+            raise ValueError("Condition unsatisfied: smoothness must be larger than 0")
+
+        output_dataset = []
+
+        for x1, x2 in self._mousewheel_vscroll_datapoints():
+            
+            step = (x2 - x1) / smoothness if smoothness > 1 else 0
+            output_ = x1
+
+            output_dataset.append(float(round(output_, 2)))
+
+            for _ in range(smoothness - 1):
+
+                output_ += step
+                output_dataset.append(float(round(output_, 2)))
+
+        return output_dataset
+
+    def mousewheel_vscroll(self, number_of_scrolls=1):
+        """
+        Each scroll will go down exactly 592 Pixels.
+        """
+
+        points = self._mousewheel_vscroll()
+
+        for _ in range(number_of_scrolls):
+
+            for i in points:
+                self.instant_vscroll_by(i)
+                sleep(0.01)
+
+            sleep(0.2)
 
 
     def _unimplemented__smooth_hscroll(self, scroll_to):
@@ -262,13 +312,6 @@ class BasicSpider:
 
     def _unimplemented__instant_hscroll(self, scroll_to):
         pass
-
-    
-    def _get_rand_float(self, range_=(0, 1)):
-        """
-        returns a random float number within given range
-        """
-        return random.uniform(*range_)
 
 
     def slow_type(self, sentence, speed=0, field_id=None, field=None, speed_range=(0.05, 0.25)):
@@ -304,6 +347,25 @@ class BasicSpider:
         else:
             raise ParameterConflictError("Must pass either 'field' OR 'field_id', but not both.")
 
+    def _unimplemented__clear_input(self, input, input_id):
+        """
+        Clear all text from given input box
+        """
+        pass
+
+
+    def _unimplemented__send_tab(self):
+        """
+        Send a tab, for example, to move to next input field or button
+        """
+        pass
+
+    def _unimplemented__send_enter(self):
+        """
+        Send an Enter, for example, to confirm login credentials while on an input field
+        """
+        pass
+
 
     def click_button(self, button_id=None, button=None):
         if button_id is not None:
@@ -316,6 +378,12 @@ class BasicSpider:
         else:
             raise ParameterConflictError("Must pass either 'button_id' OR 'button', but not both")
 
+    
+    def _unimplemented__get_combobox_items(self, combobox=None, combobox_id=None):
+        """
+        return all available options from a given combobox
+        """
+        pass
 
     def _unimplemented__select_from_combobox(self, combobox, selection):
         """
@@ -338,5 +406,4 @@ class BasicSpider:
         Raises _undefined_ exception if given checkbox is already unticked
         """
         pass
-
     

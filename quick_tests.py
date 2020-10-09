@@ -105,113 +105,20 @@ class TestSpider(unittest.TestCase):
         with self.assertRaises(ValueError):
             method(100, speed=3.564)
 
-
-    def test_smooth_vscroll_down_to(self):
+    def test_mousewheel_vscroll_by(self):
         """
-        Scroll from y = 0 down to 905. must stop at exactly given y.
-        """
-        expected_y = 357
-
-        self.spider.smooth_vscroll_down_to(expected_y)
-
-        current_y = self.spider.get_page_y_offset()
-        self.assertEqual(expected_y, current_y)
-
-        self._assert_valueError_raised(self.spider.smooth_vscroll_down_to)
-
-        self.checked_tests.append('test-vscroll-down-to')
-    
-    def test_smooth_vscroll_up_to(self):
-        """
-        Spider will scroll from y = 157 to exactly 0
+        test
         """
 
-        starting_y = 157
-        expected_y = 0     # Pixels
+        self.spider._browser.maximize_window()
 
-        self.spider.instant_vscroll_to(157)
-        self.spider.smooth_vscroll_up_to(expected_y)
+        starting_y = 0
 
-        current_y = self.spider.get_page_y_offset()
+        self.spider.mousewheel_vscroll(2)
 
-        self.assertEqual(expected_y, current_y)
-
-        self._assert_valueError_raised(self.spider.smooth_vscroll_up_to)
-
-        self.checked_tests.append("test-vscroll-up-to")
-
-
-    def test_smooth_vscroll_down_by(self):
-        """
-        Spider should arrive at expected_y
-        """
-        starting_y = 249
-        expected_y = 501
-
-        difference = expected_y - starting_y
-
-        self.spider.instant_vscroll_to(starting_y)
-        self.spider.smooth_vscroll_down_by(difference)
-
-        actual_final_y = self.spider.get_page_y_offset()
-
-        self.assertEqual(actual_final_y, expected_y)
-
-        # TODO: add test for when given amount exceeds page height
-
-        self._assert_valueError_raised(self.spider.smooth_vscroll_down_by)
-
-        self.checked_tests.append("test-vscroll-down-by")
-
-    def test_smooth_scroll_up_by(self):
-        """
-        Spider should arrive at expected_y
-        """
-
-        # Test when starting_y > expected_y
-        starting_y = 452
-        expected_y = 127
-
-        difference = starting_y - expected_y
-
-        self.spider.instant_vscroll_to(starting_y)
-        self.spider.smooth_vscroll_up_by(difference)
-
-        actual_final_y = self.spider.get_page_y_offset()
-
-        self.assertEqual(actual_final_y, expected_y)
-
-        # Test when starting_y < expected_y
-        starting_y = 357
-        expected_y = 0
-
-        difference = 500
-
-        self.spider.instant_vscroll_to(starting_y)
-        self.spider.smooth_vscroll_up_by(difference)
-
-        actual_final_y = self.spider.get_page_y_offset()
-
-        self.assertEqual(actual_final_y, expected_y)
-
-        self._assert_valueError_raised(self.spider.smooth_vscroll_up_by)
-
-        self.checked_tests.append("test-vscroll-up-by")
-
-
-    def unimplemented__test_select_from_combobox(self):
-        self.assertEqual(1, 0)
-
-
-    def unimplemented__test_toggle_checkbox(self):
-        self.assertEqual(1, 0)
-
-    def unimplemented__test_tick_checkbox(self):
-        self.assertEqual(1, 0)
-
-    def unimplemented__test_untick_checkbox(self):
-        self.assertEqual(1, 0)
-
+        new_y = self.spider.get_page_y_offset()
+        
+        self.assertNotEqual(starting_y, new_y)
 
 if __name__ == "__main__":
     unittest.main()

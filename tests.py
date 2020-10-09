@@ -59,6 +59,7 @@ class TestSpider(unittest.TestCase):
         self.spider.buffer_time = 1
         self.spider.goto(base_url)
 
+        self.spider._browser.maximize_window()
         self.spider.instant_vscroll_to(0)
 
 
@@ -288,6 +289,23 @@ class TestSpider(unittest.TestCase):
         self.checked_tests.append('test-instant-vscroll-by')
 
 
+    def test_mousewheel_vscroll(self):
+        """
+        Spider will scroll exactly 592 pixels vertically, three times.
+        """
+        starting_y = 0
+        scroll_amount = 3
+        expected_y = 592 * scroll_amount
+
+        self.spider.mousewheel_vscroll(scroll_amount)
+
+        new_y = self.spider.get_page_y_offset()
+        
+        self.assertEqual(expected_y, new_y)
+
+        self.checked_tests.append("test-mousewheel-vscroll")
+
+
     def test_slow_type_with_id(self):
 
         # REFACTOR
@@ -325,6 +343,12 @@ class TestSpider(unittest.TestCase):
         self.assertEqual(text, results)
 
         self.checked_tests.append("test-slow-type-webelement")
+
+    def unimplemented__clear_input(self):
+        """
+        Spider must clear the given input field from all text.
+        """
+        pass
 
 
     def test_click_button(self):
@@ -371,6 +395,13 @@ class TestSpider(unittest.TestCase):
 
         self.checked_tests.append("test-click-button-webelement")
 
+
+    def unimplemented__get_combobox_items(self):
+        """
+        Spider will get a list of all items in a given combobox.
+        Items must match the predefined list.
+        """
+        pass
 
     def unimplemented__test_select_from_combobox(self):
         self.assertEqual(1, 0)

@@ -39,6 +39,11 @@
                 smooth_vscroll_up_by <img class="tick-img" src="tick.png">
             </span>
 
+            <span class="separator small-margins"></span>
+
+            <span class="test-check" id="test-mousewheel-vscroll" onclick="passTest(this)">
+                mousewheel_vscroll <img src="tick.png" class="tick-img">
+            </span>
 
             <span class="separator small-margins"></span>
 
@@ -86,21 +91,36 @@
         <h1 id="page-title" class="page-title">Welcome to this mock html webpage</h1>
         <h2>Not much todo here for a plain ol' human</h2>
 
+        <span class="separator small-margins"></span>
+
+        <span class="separator small-margins"></span>
+
         <div id="bodies-of-text">
             <div class="large-text">
-                This is a mock page with things put in place to test the functionality of my spider!
+                The tests in this page are meant to test the features of the spider to validate that function
+                as expected
             </div>
 
             <div class="large-text">
-                I've intentionally put a lot of content here just to make the page vertically longer
+                These tests are meant to put the spider through every possible circumstance it could come across,
+                therefore, one of the tests is actually just every single feature that the spider has being used,
+                one after the other.
             </div>
 
             <div class="large-text">
-                This section is all about having large bodies of text that fill up space.
+                The page is divided into different sections relevant to each test, but it's a bit chaotic
+                because I started getting a bit lazy half-way, mainly because the spider doesn't care what
+                I label the sections.
             </div>
 
             <div class="large-text">
-                This is the last large body of text mean to just occupy veritcal space.
+                These bodies of text are here to take up vertical space to make visualising scroll tests a bit easier.
+            </div>
+
+            <div class="large-text">
+                Through a lot of testing, I have discovered that I cover a vertical distance of about 600 pixels
+                with every mousewheel scroll. which is why that's the amount that I've set for my mousewheel scroll
+                function!
             </div>
 
         </div>
