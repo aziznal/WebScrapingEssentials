@@ -1,0 +1,11 @@
+# Files
+geckodriver.log
+project_settings.json
+TestSpider.py
+.coverage
+
+# Directories
+__pycache__
+.vscode
+venv
+node_modules

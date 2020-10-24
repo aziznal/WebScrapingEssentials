@@ -1,11 +1,10 @@
 # Files
-geckodriver.log
-project_settings.json
-TestSpider.py
-.coverage
 
 # Directories
 __pycache__
 .vscode
 venv
 node_modules
+dist
+build
+basic_web_scraper.egg-info
