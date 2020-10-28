@@ -7,7 +7,7 @@ with open("README.md", 'r') as readme_file:
 
 setuptools.setup(
     name="basic-web-scraper",
-    version="0.13.5a1",
+    version="0.13.5a2",
     author="aziznal",
     author_email="aziznal.dev@gmail.com",
     url="https://github.com/aziznal/basic-web-scraper",

@@ -11,7 +11,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions as sel_exception
 
-from custom_exceptions import *
+from .custom_exceptions import *
 
 default_options = Options()
 default_options.headless = False
