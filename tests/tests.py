@@ -1,5 +1,5 @@
 import unittest
-from basic_web_scraper.BasicSpider import BasicSpider
+from BasicSpider import BasicSpider
 from time import sleep, perf_counter
 
 from selenium.webdriver.firefox.options import Options
@@ -91,6 +91,40 @@ class TestSpider(unittest.TestCase):
         self.assertEqual(actual_innerHTML, expected_innerHTML)
 
         self.checked_tests.append("test-get-inner-html")
+
+    def test_get_element_y(self):
+        element_id = "smooth-vertical"
+        element_y_display_id = "smooth-vertical-current-y"
+
+        # Element y is generated on-site using a script
+        expected_element_y = int(self.spider.get_element_inner_html(element_id=element_y_display_id))
+
+        # Scroll to put target element in view
+        self.spider.instant_vscroll_to(expected_element_y)
+        
+        # Get element y using spider
+        actual_element_y = int(self.spider.get_element_y(element_id=element_id))
+
+        # print(f"Expected: {expected_element_y}\nGot: {actual_element_y}")
+
+        self.assertEqual(expected_element_y, actual_element_y)
+
+        self.checked_tests.append("get-element-y-test")
+
+    def test_get_element_text(self):
+        element_id = "slow-input-field"
+        starting_text = "Have you ever been to the cloud district?"
+
+        element_y = self.spider.get_element_y(element_id=element_id)
+
+        self.spider.instant_vscroll_to(element_y)
+        self.spider.slow_type(sentence=starting_text, field_id=element_id, speed_range=(0.02, 0.08))
+
+        # Confirm field is filled with given text
+        current_text = self.spider.get_element_text(element_id=element_id)
+        self.assertEqual(current_text, starting_text)
+
+        self.checked_tests.append("get-element-text-test")
 
 
     def _assert_valueError_raised(self, method):
@@ -315,7 +349,7 @@ class TestSpider(unittest.TestCase):
         text = "This text is being typed in slowly"        
 
         self.spider.instant_vscroll_to(3200)
-        self.spider.slow_type(sentence=text, field_id=element_id)
+        self.spider.slow_type(sentence=text, field_id=element_id, speed_range=(0.02, 0.08))
 
         self.spider.click_button(results_button_id)
         sleep(0.05)
@@ -334,7 +368,7 @@ class TestSpider(unittest.TestCase):
         text = "This text is being typed in slowly"
 
         self.spider.instant_vscroll_to(3200)
-        self.spider.slow_type(sentence=text, field=field)
+        self.spider.slow_type(sentence=text, field=field, speed_range=(0.02, 0.08))
 
         self.spider.click_button(results_button_id)
         sleep(0.05)
@@ -344,11 +378,28 @@ class TestSpider(unittest.TestCase):
 
         self.checked_tests.append("test-slow-type-webelement")
 
-    def unimplemented__clear_input(self):
+    def test_clear_input(self):
         """
-        Spider must clear the given input field from all text.
+        Spider will type a value into an input and then clear given input from any value
         """
-        pass
+
+        input_field_id = "slow-input-field"
+
+        # Scroll element into view
+        field_y = self.spider.get_element_y(element_id=input_field_id)
+        self.spider.instant_vscroll_to(field_y)
+
+        # Type some random text into the field and confirm it isn't empty
+        self.spider.slow_type(sentence="There is input in this field", field_id=input_field_id, speed_range=(0.02, 0.08))
+        field_clear = len(self.spider.get_element_text(element_id=input_field_id)) == 0
+        self.assertFalse(field_clear)
+
+        # Clear field and check if clear again
+        self.spider.clear_input(element_id=input_field_id)
+        field_clear = len(self.spider.get_element_text(element_id=input_field_id)) == 0
+        self.assertTrue(field_clear)
+
+        self.checked_tests.append("clear-input-test")
 
 
     def test_click_button(self):

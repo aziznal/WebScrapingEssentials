@@ -6,7 +6,8 @@
   "scripts": {
     "tests": "coverage run --omit=venv/* tests.py",
     "qtests": "coverage run --omit=venv/* quick_tests.py",
-    "serve": "lite-server mock_webpage/mock_webpage.html"
+    "serve": "lite-server mock_webpage/mock_webpage.html",
+    "python_server": "python start_local_server.py 127.1.1.1 7123"
   },
   "repository": {
     "type": "git",

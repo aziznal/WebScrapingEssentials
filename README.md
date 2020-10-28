@@ -32,34 +32,19 @@ class CustomSpider(BasicSpider):
 
 ---
 
-## Details about files
+## More Description
 
-### __geckodriver.exe | geckodriver__
+### Driver
+In order for the package to work, you must include a geckodriver.exe in your local project directory. Otherwise using instantiating the BasicSpider class will raise a __GeckoNotFoundException__
 
-Keep this file in local directory when using scraper on windows. If you're using a linux system, make sure to include geckodriver in PATH variable. Downloaded from [here](https://github.com/mozilla/geckodriver/releases)
-
-Note: geckodriver.exe is for windows, and geckodriver (no extension) is for Linux
+Note: This package currently only supports working with The Firefox geckodriver, which can be downloaded from [here](https://github.com/mozilla/geckodriver/releases)
 
 ### [__BasicSpider.py__](https://github.com/aziznal/basic-web-scraper/blob/master/BasicSpider.py)
 
 Use this as the superclass for your own project's spider
 
-This Spider can do basic things like goto a url, scroll down the page in different ways, refresh the page, etc..
+This Spider allows you tu do basic things like goto a url, scroll down the page in different ways, refresh the page, etc..
 
 It acts as an interface to _**selenium.webdriver**_ to make setting up a project easier
 
-### __custom_exceptions.py__
-
-Copy alongside BasicSpider.py, add any custom exceptions to this file.
-
-### __package.json__ | package-lock.json
-used to install dependencies related to testing and its related workflows. not needed for the spider to function.
-
-### __start_local_server.py__
-used for testing. optional.
-
-### __tests.py__
-this is where all the tests for the scraper are done. optional.
-
-### __mock_webpage__
-used for testing. optional. can be used as a simple demo.
+More docs will be added in the future.

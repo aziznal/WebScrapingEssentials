@@ -26,11 +26,13 @@ const displayPageY = (element_id) => {
 const getElementY = (element_id, display_to) => {
     
     const element = document.getElementById(element_id);
-    let element_rect = element.getBoundingClientRect();
-    element_y = parseInt(element_rect.top + window.scrollY);
+    // let element_rect = element.getBoundingClientRect();
+    // element_y = parseInt(element_rect.top + window.scrollY);
+
+    element_y = element.offsetTop
 
     display_element = document.getElementById(display_to);
-    display_element.innerHTML = "Element Y: " + element_y;
+    display_element.innerHTML = element_y;
 
     return element_y;
 }

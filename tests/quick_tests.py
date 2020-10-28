@@ -105,20 +105,38 @@ class TestSpider(unittest.TestCase):
         with self.assertRaises(ValueError):
             method(100, speed=3.564)
 
-    def test_mousewheel_vscroll_by(self):
+    ### DONE
+    def test_send_enter(self):
         """
-        test
+        Spider will type something into an input field, then trigger
+        a button by sending it an Enter keypress which will show the
+        typed text in a target below the input field.
         """
 
-        self.spider._browser.maximize_window()
+        input_field_id = "slow-input-field"
+        target_output_id = "slow-input-results"
+        target_trigger_id = "slow-results-button"
+        exepcted_text = "What does the fox say?"
 
-        starting_y = 0
+        # Scroll into view
+        input_field_y = self.spider.get_element_y(element_id=input_field_id)
+        self.spider.instant_vscroll_to(input_field_y)
 
-        self.spider.mousewheel_vscroll(2)
+        # Type something into field
+        self.spider.slow_type(sentence=exepcted_text, field_id=input_field_id, speed_range=(0.02, 0.08))
 
-        new_y = self.spider.get_page_y_offset()
-        
-        self.assertNotEqual(starting_y, new_y)
+        # Confirm target is empty before submission
+        target_empty = len(self.spider.get_element_inner_html(element_id=target_output_id)) == 0
+        self.assertTrue(target_empty)
+
+        # Send an Enter to the target
+        self.spider.send_enter(element_id=target_trigger_id)
+
+        # Check target output for expected text
+        actual_text = self.spider.get_element_inner_html(element_id=target_output_id)
+        self.assertEqual(exepcted_text, actual_text)
+        self.assertNotEqual(actual_text, "Something completely unrelated")
+
 
 if __name__ == "__main__":
     unittest.main()

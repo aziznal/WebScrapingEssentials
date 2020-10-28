@@ -5,7 +5,7 @@ class GeckoNotFoundException(Exception):
         super().__init__(*args, **kwargs)
 
 
-class ParameterConflictError(Exception):
+class ParameterError(Exception):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

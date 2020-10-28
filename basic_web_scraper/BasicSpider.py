@@ -1,37 +1,58 @@
 from selenium import webdriver
 from time import sleep, perf_counter
+
 import random
+import os
+
 from datetime import datetime
 from bs4 import BeautifulSoup
 
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions as sel_exception
 
-from .custom_exceptions import *
+from custom_exceptions import *
 
 default_options = Options()
 default_options.headless = False
 
 
 class BasicSpider:
-    def __init__(self, url, sleep_time=3, options=default_options):
+    def __init__(self, url=None, sleep_time=3, options=default_options):
         """ 
         Args:
-        
+
             url (str): page to load when browser is first launched
             sleep_time (int): a wait-time (in seconds) to allow things like page loads to finish.
             options (selenium.webdriver.firefox.options.Options): custom options for browser
         """
+
+        self.confirm_geckodriver_in_dir()
 
         self.sleep_time = sleep_time
         self._browser = webdriver.Firefox(options=options)
 
         self.page_soup = None
 
+        if url is not None:
+            self.goto(url)
+
+    def confirm_geckodriver_in_dir(self):
+        
+        # Open local dir.
+        # Get list of files in dir.
+        # Raise GeckoNotFoundException if geckodriver.exe is not in list.
+        # return otherwise
+        file_list = os.listdir()
+        
+        if "geckodriver.exe" in file_list:
+            return
+        
+        else:
+            raise GeckoNotFoundException("geckodriver.exe was not found in local directory")
 
     def _load_page_soup(self):
         return BeautifulSoup(self.page_source, features="lxml")
-
 
     def _confirm_positive_integer(self, value, include_zero=False):
         """
@@ -47,14 +68,13 @@ class BasicSpider:
 
             # Integer
             assert type(value) == type(1)   # Integer
-        
+
         except AssertionError:
             raise ValueError("value must be a positive integer")
 
-
     def _get_rand_float(self, range_=(0, 1)):
         """
-        returns a random float number within given range
+        returns a random float number within given range using random.uniform()
         """
         return random.uniform(*range_)
 
@@ -63,6 +83,24 @@ class BasicSpider:
         y_offset = self._browser.execute_script("return window.pageYOffset")
 
         return y_offset
+
+    def get_element_y(self, element_id=None, element_class=None):
+        """
+        Return Y Offset from the top of the page for the given element
+        """
+        if element_id is not None:
+            return self._browser.execute_script(
+                f"return document.getElementById('{element_id}').offsetTop"
+                )
+
+        elif element_class is not None:
+            return self._browser.execute_script(
+                f"return document.getElementsByClassName('{element_class}')[0].offsetTop"
+                )
+
+        else:
+            msg = "Pass either element_id OR element_class, but not both"
+            raise ParameterError(msg)
 
 
     def get_element_inner_html(self, element_id=None, element_class=None):
@@ -79,27 +117,38 @@ class BasicSpider:
 
         else:
             msg = "Pass either element_id or element_class, but not both"
-            raise ParameterConflictError(msg)
+            raise ParameterError(msg)
 
+    def get_element_text(self, element_id=None, element_class=None):
+        """
+        Return text from elements such as inputs
+        """
+        if element_id is not None:
+            return self._browser.execute_script(f'return document.getElementById("{element_id}").value')
+
+        elif element_class is not None:
+            return self._browser.execute_script(f'return document.getElementsByClassName("{element_class}")[0].value')
+
+        else:
+            msg = "Pass either element_id or element_class, but not both"
+            raise ParameterError(msg)
 
     def wait(self, time=None):
-        
+
         if time is None:
-            time = self.sleep_time    
+            time = self.sleep_time
 
         sleep(self.sleep_time)
-
 
     def goto(self, url, wait=False, wait_for=None):
         """
         Navigate to given URL. Note that some pages will not load all elements
-        even if driver thinks the page has been loaded. hence why there's a wait param
+        even if driver thinks the page has been loaded
         """
         self._browser.get(url)
 
         if wait:
             self.wait(wait_for)
-
 
     def refresh_page(self, wait=False, wait_for=None):
         """
@@ -112,7 +161,6 @@ class BasicSpider:
 
         # refresh page source to get new changes
         self.page_soup = self._load_page_soup()
-
 
     def get_timestamp(self, for_filename=False):
         """
@@ -135,7 +183,7 @@ class BasicSpider:
 
         speed: (int) pixels scrolled per loop (effective speed)
         """
-        
+
         self._confirm_positive_integer(scroll_to)
         self._confirm_positive_integer(speed)
 
@@ -146,13 +194,13 @@ class BasicSpider:
             raise BadScrollPositionException(msg)
 
         while current_y < scroll_to:
-            
+
             current_y += speed
             self.instant_vscroll_to(current_y)
-            
+
         # Jump to target when few enough pixels remain
         self.instant_vscroll_to(scroll_to)
-    
+
     def smooth_vscroll_down_by(self, scroll_by, speed=1):
         """
         Scroll down by the given amount of pixels at the given speed
@@ -163,7 +211,7 @@ class BasicSpider:
 
         speed: (int) amount of pixels scrolled per loop
         """
-        
+
         self._confirm_positive_integer(scroll_by)
         self._confirm_positive_integer(speed)
 
@@ -189,7 +237,7 @@ class BasicSpider:
 
         speed: (int) pixels scrolled per loop (effective speed)
         """
-            
+
         self._confirm_positive_integer(scroll_to, include_zero=True)
         self._confirm_positive_integer(speed)
 
@@ -199,8 +247,7 @@ class BasicSpider:
             msg = "'scroll_to' < current y offset. consider using smooth_vscroll_down_to instead?"
             raise BadScrollPositionException(msg)
 
-
-        while current_y > scroll_to:            
+        while current_y > scroll_to:
             current_y -= speed
             self.instant_vscroll_to(current_y)
 
@@ -217,7 +264,7 @@ class BasicSpider:
 
         speed: (int) amount of pixels scrolled per loop
         """
-        
+
         self._confirm_positive_integer(scroll_by)
         self._confirm_positive_integer(speed)
 
@@ -238,7 +285,7 @@ class BasicSpider:
         """
         try:
             assert scroll_to >= 0
-        
+
         except AssertionError:
             raise ValueError("scroll_to must be >= 0")
 
@@ -250,7 +297,7 @@ class BasicSpider:
         """
         self._browser.execute_script(f"window.scrollBy(0, {scroll_by})")
 
-    
+
     def _mousewheel_vscroll_datapoints(self):
         """
         this is a generator that yields (point_i, point_i+1) from static data
@@ -273,12 +320,13 @@ class BasicSpider:
         """
 
         if smoothness <= 0:
-            raise ValueError("Condition unsatisfied: smoothness must be larger than 0")
+            raise ValueError(
+                "Condition unsatisfied: smoothness must be larger than 0")
 
         output_dataset = []
 
         for x1, x2 in self._mousewheel_vscroll_datapoints():
-            
+
             step = (x2 - x1) / smoothness if smoothness > 1 else 0
             output_ = x1
 
@@ -307,13 +355,6 @@ class BasicSpider:
             sleep(0.2)
 
 
-    def _unimplemented__smooth_hscroll(self, scroll_to):
-        pass
-
-    def _unimplemented__instant_hscroll(self, scroll_to):
-        pass
-
-
     def slow_type(self, sentence, speed=0, field_id=None, field=None, speed_range=(0.05, 0.25)):
         """
         Slowly send text to a given input field.
@@ -339,46 +380,48 @@ class BasicSpider:
         elif field_id is not None:
             # Raises NoSuchElementException
             field = self._browser.find_element_by_id(field_id)
-            
+
             for letter in sentence:
                 field.send_keys(letter)
                 sleep(self._get_rand_float(range_))
 
         else:
-            raise ParameterConflictError("Must pass either 'field' OR 'field_id', but not both.")
+            raise ParameterError(
+                "Must pass either 'field' OR 'field_id', but not both.")
 
-    def _unimplemented__clear_input(self, input, input_id):
+    def clear_input(self, element_id):
         """
         Clear all text from given input box
         """
-        pass
+        # self._browser.execute_script(
+        #     f"document.getElementById('{element_id}').value = ''"
+        # )
 
-
-    def _unimplemented__send_tab(self):
+        element = self._browser.find_element_by_id(element_id)
+        element.clear()
+    
+    def send_enter(self, element_id):
         """
-        Send a tab, for example, to move to next input field or button
+        Send an Enter, for example, to submit while on an input field
         """
-        pass
+        element = self._browser.find_element_by_id(element_id)
+        element.send_keys(Keys.ENTER)
 
-    def _unimplemented__send_enter(self):
-        """
-        Send an Enter, for example, to confirm login credentials while on an input field
-        """
-        pass
-
-
+        
     def click_button(self, button_id=None, button=None):
         if button_id is not None:
-            button = self._browser.execute_script(f'return document.getElementById("{button_id}")')
+            button = self._browser.execute_script(
+                f'return document.getElementById("{button_id}")')
             button.click()
 
         elif button is not None:
             button.click()
 
         else:
-            raise ParameterConflictError("Must pass either 'button_id' OR 'button', but not both")
+            raise ParameterError(
+                "Must pass either 'button_id' OR 'button', but not both")
 
-    
+
     def _unimplemented__get_combobox_items(self, combobox=None, combobox_id=None):
         """
         return all available options from a given combobox
@@ -394,7 +437,7 @@ class BasicSpider:
 
     def _unimplemented__toggle_checkbox(self, checkbox):
         pass
-        
+
     def _unimplemented__tick_checkbox(self, checkbox):
         """
         Raises _undefined_ exception if given checkbox is already ticked
@@ -406,4 +449,3 @@ class BasicSpider:
         Raises _undefined_ exception if given checkbox is already unticked
         """
         pass
-    

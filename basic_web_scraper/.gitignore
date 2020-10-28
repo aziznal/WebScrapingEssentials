@@ -3,6 +3,8 @@ geckodriver.log
 project_settings.json
 TestSpider.py
 .coverage
+geckodriver.exe
+geckodriver.log
 
 # Directories
 __pycache__
