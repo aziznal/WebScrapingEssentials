@@ -32,10 +32,12 @@ class BasicSpider:
         self.sleep_time = sleep_time
         self._browser = webdriver.Firefox(options=options)
 
-        self.page_soup = None
-
         if url is not None:
             self.goto(url)
+            self.page_soup = self._load_page_soup()
+
+        else:
+            self.page_soup = None
 
     def confirm_geckodriver_in_dir(self):
         
@@ -52,7 +54,7 @@ class BasicSpider:
             raise GeckoNotFoundException("geckodriver.exe was not found in local directory")
 
     def _load_page_soup(self):
-        return BeautifulSoup(self.page_source, features="lxml")
+        return BeautifulSoup(self._browser.page_source, features="lxml")
 
     def _confirm_positive_integer(self, value, include_zero=False):
         """
@@ -149,6 +151,8 @@ class BasicSpider:
 
         if wait:
             self.wait(wait_for)
+
+        self.page_soup = self._load_page_soup()
 
     def refresh_page(self, wait=False, wait_for=None):
         """
