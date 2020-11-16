@@ -77,18 +77,12 @@ class TestSpider(unittest.TestCase):
 
     def test_get_element_inner_html(self):
         element_id = element_class = "page-title"
-        expected_innerHTML = "Welcome to this mock html webpage"
+        expected_innerHTML = "Basic-Web-Scraper Test Page"
 
         # Test using element id as search parameter
         actual_innerHTML = self.spider.get_element_inner_html(element_id=element_id)
         self.assertEqual(actual_innerHTML, expected_innerHTML)
 
-        # reset actual_innerHTML
-        actual_innerHTML = None
-
-        # Test using element class name as parameter
-        actual_innerHTML = self.spider.get_element_inner_html(element_class=element_class)
-        self.assertEqual(actual_innerHTML, expected_innerHTML)
 
         self.checked_tests.append("test-get-inner-html")
 
@@ -112,16 +106,18 @@ class TestSpider(unittest.TestCase):
         self.checked_tests.append("get-element-y-test")
 
     def test_get_element_text(self):
-        element_id = "slow-input-field"
+        field_id = "slow-input-field"
+        field = self.spider._browser.find_element_by_id(field_id)
+
         starting_text = "Have you ever been to the cloud district?"
 
-        element_y = self.spider.get_element_y(element_id=element_id)
+        element_y = self.spider.get_element_y(element_id=field_id)
 
         self.spider.instant_vscroll_to(element_y)
-        self.spider.slow_type(sentence=starting_text, field_id=element_id, speed_range=(0.02, 0.08))
+        self.spider.slow_type(text=starting_text, field=field, speed_range=(0.02, 0.08))
 
         # Confirm field is filled with given text
-        current_text = self.spider.get_element_text(element_id=element_id)
+        current_text = self.spider.get_element_text(element_id=field_id)
         self.assertEqual(current_text, starting_text)
 
         self.checked_tests.append("get-element-text-test")
@@ -340,35 +336,17 @@ class TestSpider(unittest.TestCase):
         self.checked_tests.append("test-mousewheel-vscroll")
 
 
-    def test_slow_type_with_id(self):
-
-        # REFACTOR
-        element_id = "slow-input-field"
-        results_button_id = "slow-results-button"
-        result_field_id = "slow-input-results"
-        text = "This text is being typed in slowly"        
-
-        self.spider.instant_vscroll_to(3200)
-        self.spider.slow_type(sentence=text, field_id=element_id, speed_range=(0.02, 0.08))
-
-        self.spider.click_button(results_button_id)
-        sleep(0.05)
-
-        results = self.spider.get_element_inner_html(result_field_id)
-        self.assertEqual(text, results)
-
-        self.checked_tests.append("test-slow-type-id")
-
-    def test_slow_type_with_WebElement(self):
+    def test_slow_type(self):
         
-        # REFACTOR
         field = self.spider._browser.find_element_by_id("slow-input-field")
+        field_y = self.spider.get_element_y(element_id="slow-input-field")
+
         results_button_id = "slow-results-button"
         result_field_id = "slow-input-results"
-        text = "This text is being typed in slowly"
+        text = "How much wood would a wood chuck chuck if a wood chuck could chuck wood"
 
-        self.spider.instant_vscroll_to(3200)
-        self.spider.slow_type(sentence=text, field=field, speed_range=(0.02, 0.08))
+        self.spider.instant_vscroll_to(field_y)
+        self.spider.slow_type(text=text, field=field, speed_range=(0.02, 0.08))
 
         self.spider.click_button(results_button_id)
         sleep(0.05)
@@ -378,19 +356,21 @@ class TestSpider(unittest.TestCase):
 
         self.checked_tests.append("test-slow-type-webelement")
 
+
     def test_clear_input(self):
         """
         Spider will type a value into an input and then clear given input from any value
         """
 
         input_field_id = "slow-input-field"
+        input_field = self.spider._browser.find_element_by_id(input_field_id)
 
         # Scroll element into view
         field_y = self.spider.get_element_y(element_id=input_field_id)
         self.spider.instant_vscroll_to(field_y)
 
         # Type some random text into the field and confirm it isn't empty
-        self.spider.slow_type(sentence="There is input in this field", field_id=input_field_id, speed_range=(0.02, 0.08))
+        self.spider.slow_type(text="There is input in this field", field=input_field, speed_range=(0.02, 0.08))
         field_clear = len(self.spider.get_element_text(element_id=input_field_id)) == 0
         self.assertFalse(field_clear)
 

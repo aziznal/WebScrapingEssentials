@@ -3,7 +3,7 @@
 ## Project Description
 This package can be used for simple automated web surfing / scraping.
 
-Additionally, the included BasicSpider class is meant to be extended by inheritance.
+Create classes inheriting the included BasicSpider class to create custom behavior to suit your requirements.
 
 ---
 
@@ -35,7 +35,7 @@ class CustomSpider(BasicSpider):
 ## More Description
 
 ### Driver
-In order for the package to work, you must include a geckodriver.exe in your local project directory. Otherwise using instantiating the BasicSpider class will raise a __GeckoNotFoundException__
+In order for the package to work, you must include a __```geckodriver.exe```__ in your local project directory. Otherwise a __```GeckoNotFoundException```__ will be raised
 
 Note: This package currently only supports working with The Firefox geckodriver, which can be downloaded from [here](https://github.com/mozilla/geckodriver/releases)
 
@@ -43,7 +43,7 @@ Note: This package currently only supports working with The Firefox geckodriver,
 
 Use this as the superclass for your own project's spider
 
-This Spider allows you tu do basic things like goto a url, scroll down the page in different ways, refresh the page, etc..
+This Spider allows you to do basic things like goto a url, scroll down the page in different ways, refresh the page, etc..
 
 It acts as an interface to _**selenium.webdriver**_ to make setting up a project easier
 

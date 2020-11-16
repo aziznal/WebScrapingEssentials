@@ -1,245 +1,344 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="styles.css">
     <script src="scripts.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 
-<body>
+<body class="bg-dark text-light">
 
-    <div class="side-bar-container">
-        <div class="side-bar-display">
+    <div class="container-fluid row m-3 mx-auto">
 
-            <p id="page_offset_display">Page Y:</p>
+        <div class="col-3 ml-1">
+
+            <div class="p-2 sticky-top border rounded bg-light text-dark">
+                <div>
+                    <p id="page_offset_display" class="text-info"></p>
+                </div>
+
+                <hr class="clearfix bg-light">
+
+                <h3 class="text-dark text-center border rounded bg-info text-dark">Tests</h3>
+
+                <p style="font-size: 0.7rem;">Note: tests are done in random order</p>
+
+                <div id="test-checkmarks" class="d-flex flex-column checkmarks-container overflow-auto">
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-get-inner-html" onclick="passTest(this)">
+                        <span class="col-11">get_element_inner_html</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-vscroll-down-to" onclick="passTest(this)">
+                        <span class="col-11">smooth_vscroll_down_to</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-vscroll-down-by" onclick="passTest(this)">
+                        <span class="col-11">smooth_vscroll_down_by</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-vscroll-up-to" onclick="passTest(this)">
+                        <span class="col-11">smooth_vscroll_up_to</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-vscroll-up-by" onclick="passTest(this)">
+                        <span class="col-11">smooth_vscroll_up_by</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-mousewheel-vscroll"
+                        onclick="passTest(this)">
+                        <span class="col-11">mousewheel_vscroll</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-vscroll-to-element"
+                        onclick="passTest(this)">
+                        <span class="col-11">instant_vscroll_to_element</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-instant-vscroll-to"
+                        onclick="passTest(this)">
+                        <span class="col-11">instant_vscroll_to</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-instant-vscroll-by"
+                        onclick="passTest(this)">
+                        <span class="col-11">instant_vscroll_by</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-slow-type-webelement"
+                        onclick="passTest(this)">
+                        <span class="col-11">slow_type_using_webElement</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-click-button-id" onclick="passTest(this)">
+                        <span class="col-11">click_button_using_id</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="test-click-button-webelement"
+                        onclick="passTest(this)">
+                        <span class="col-11">click_button_using_webElement</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="get-element-y-test" onclick="passTest(this)">
+                        <span class="col-11">get_element_y</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="get-element-text-test" onclick="passTest(this)">
+                        <span class="col-11">get_element_text</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                    <span class="my-3 mx-auto border w-75"></span>
+
+                    <div class="row-fluid d-flex flex-row-reverse" id="clear-input-test" onclick="passTest(this)">
+                        <span class="col-11">clear_input</span> <img class="tick-img" src="tick.png">
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div id="test-checkmarks" class="side-bar-display">
-            <p style="font-size: 0.75em;">Note: tests are done in random order</p>
-            <h3 style="text-align: center;">Tests</h3>
-            
-            <span class="test-check" id="test-get-inner-html" onclick="passTest(this)">
-                get_element_inner_html <img class="tick-img" src="tick.png">
-            </span>
+        <div class="col-8 py-5 bg-light text-dark mx-auto rounded">
 
-            <span class="separator small-margins"></span>
+            <div class="container">
 
-            <span class="test-check" id="test-vscroll-down-to" onclick="passTest(this)">
-                smooth_vscroll_down_to <img class="tick-img" src="tick.png">
-            </span>
+                <!-- Page Title -->
+                <div class="row-fluid text-center my-3">
+                    <h1 id="page-title">Basic-Web-Scraper Test Page</h1>
+                </div>
 
-            <span class="test-check" id="test-vscroll-down-by" onclick="passTest(this)">
-                smooth_vscroll_down_by <img class="tick-img" src="tick.png">
-            </span>
+                <hr>
 
-            <span class="test-check" id="test-vscroll-up-to" onclick="passTest(this)">
-                smooth_vscroll_up_to<img class="tick-img" src="tick.png">
-            </span>
+                <hr>
 
-            <span class="test-check" id="test-vscroll-up-by" onclick="passTest(this)">
-                smooth_vscroll_up_by <img class="tick-img" src="tick.png">
-            </span>
+                <div id="bodies-of-text" class="row-fluid container-fluid">
+                    <div class="body-of-text bg-lightish m-5 border rounded p-3 ">
+                        The tests in this page are meant to test the features of the spider to validate that function
+                        as expected
+                    </div>
 
-            <span class="separator small-margins"></span>
+                    <div class="body-of-text bg-lightish m-5 text-danger border rounded p-3 ">
+                        These tests are meant to put the spider through every possible circumstance it could come
+                        across,
+                        therefore, one of the tests is actually just every single feature that the spider has being
+                        used,
+                        one after the other.
+                    </div>
 
-            <span class="test-check" id="test-mousewheel-vscroll" onclick="passTest(this)">
-                mousewheel_vscroll <img src="tick.png" class="tick-img">
-            </span>
+                    <div class="body-of-text bg-lightish m-5 text-primary border rounded p-3 ">
+                        The page is divided into different sections relevant to each test, but it's a bit chaotic
+                        because I started getting a bit lazy half-way, mainly because the spider doesn't care what
+                        I label the sections.
+                    </div>
 
-            <span class="separator small-margins"></span>
+                    <div class="body-of-text bg-lightish m-5 text-success border rounded p-3 ">
+                        These bodies of text are here to take up vertical space to make visualising scroll tests a bit
+                        easier.
+                    </div>
 
+                    <div class="body-of-text bg-lightish m-5 text-info border rounded p-3 ">
+                        Through a lot of testing, I have discovered that I cover a vertical distance of about 600 pixels
+                        with every mousewheel scroll. which is why that's the amount that I've set for my mousewheel
+                        scroll
+                        function!
+                    </div>
 
-            <span class="test-check" id="test-vscroll-to-element" onclick="passTest(this)">
-                instant_vscroll_to_element <img class="tick-img" src="tick.png">
-            </span>
+                </div>
 
-            <span class="test-check" id="test-instant-vscroll-to" onclick="passTest(this)">
-                instant_vscroll_to <img class="tick-img" src="tick.png">
-            </span>
+                <hr>
 
-            <span class="test-check" id="test-instant-vscroll-by" onclick="passTest(this)">
-                instant_vscroll_by <img class="tick-img" src="tick.png">
-            </span>
+                <div id="scrolling-tests" class="row-fluid container-fluid p-4 border bg-lightish">
 
+                    <h2>Scrolling Tests</h2>
 
-            <span class="separator small-margins"></span>
+                    <hr>
 
+                    <div id="smooth-vertical" class="bg-info p-3 m-3 rounded border text-light"
+                        style="font-size: 1.3rem;">
+                        This element is at y =
+                        <span id="smooth-vertical-current-y"></span>
+                    </div>
 
-            <span class="test-check" id="test-slow-type-id" onclick="passTest(this)">
-                slow_type_using_id <img class="tick-img" src="tick.png">
-            </span>
+                    <div id="instant-vertical" class="bg-info p-3 m-3 rounded border text-light"
+                        style="font-size: 1.3rem;">
+                        This element is at y =
+                        <span id="instant-vertical-current-y"></span>
+                    </div>
 
-            <span class="test-check" id="test-slow-type-webelement" onclick="passTest(this)">
-                slow_type_using_webElement <img class="tick-img" src="tick.png">
-            </span>
+                </div>
+                <!-- End of Scrolling Tests -->
 
-            <span class="separator small-margins"></span>
-            
-            <span class="test-check" id="test-click-button-id" onclick="passTest(this)">
-                click_button_using_id <img class="tick-img" src="tick.png">
-            </span>
+                <hr>
 
-            <span class="test-check" id="test-click-button-webelement" onclick="passTest(this)">
-                click_button_using_webElement <img class="tick-img" src="tick.png">
-            </span>
+                <div id="combobox-tests" class="row-fluid container-fluid border bg-lightish p-3">
+                    <h2>Combobox Tests</h2>
 
-            <span class="separator small-margins"></span>
-            
-            <span class="test-check" id="get-element-y-test" onclick="passTest(this)">
-                get_element_y <img class="tick-img" src="tick.png">
-            </span>
+                    <hr>
 
-            <span class="test-check" id="get-element-text-test" onclick="passTest(this)">
-                get_element_text <img class="tick-img" src="tick.png">
-            </span>
+                    <p>
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-octagon"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353L4.54.146zM5.1 1L1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1H5.1z" />
+                            <path
+                                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
+                        </svg>
 
-            <span class="separator small-margins"></span>
+                        This test is still under construction
 
-            <span class="test-check" id="clear-input-test" onclick="passTest(this)">
-                clear_input <img class="tick-img" src="tick.png">
-            </span>
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bricks" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M0 .5A.5.5 0 0 1 .5 0h15a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H14v2h1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H14v2h1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5H2v-2H.5a.5.5 0 0 1-.5-.5v-3A.5.5 0 0 1 .5 6H2V4H.5a.5.5 0 0 1-.5-.5v-3zM3 4v2h4.5V4H3zm5.5 0v2H13V4H8.5zM3 10v2h4.5v-2H3zm5.5 0v2H13v-2H8.5zM1 1v2h3.5V1H1zm4.5 0v2H15V1H5.5zM1 7v2h3.5V7H1zm4.5 0v2h5V7h-5zm6 0v2H15V7h-3.5zM1 13v2h3.5v-2H1zm4.5 0v2h5v-2h-5zm6 0v2H15v-2h-3.5z" />
+                        </svg>
 
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hammer" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.812 1.952a.5.5 0 0 1-.312.89c-1.671 0-2.852.596-3.616 1.185L4.857 5.073V6.21a.5.5 0 0 1-.146.354L3.425 7.853a.5.5 0 0 1-.708 0L.146 5.274a.5.5 0 0 1 0-.706l1.286-1.29a.5.5 0 0 1 .354-.146H2.84C4.505 1.228 6.216.862 7.557 1.04a5.009 5.009 0 0 1 2.077.782l.178.129z" />
+                            <path fill-rule="evenodd"
+                                d="M6.012 3.5a.5.5 0 0 1 .359.165l9.146 8.646A.5.5 0 0 1 15.5 13L14 14.5a.5.5 0 0 1-.756-.056L4.598 5.297a.5.5 0 0 1 .048-.65l1-1a.5.5 0 0 1 .366-.147z" />
+                        </svg>
+
+                    </p>
+
+                    <select class="m-3" id="test-combobox">
+                        <option>Carrot</option>
+                        <option>Urchin</option>
+                        <option>Nuts</option>
+                        <option>Tomato</option>
+                    </select>
+
+                </div>
+                <!-- End of Combobox Tests -->
+
+                <hr>
+
+                <div id="hidden-until-scroll-test" class="row-fluid container-fluid border bg-lightish p-3">
+                    <h2>Hidden Element Test</h2>
+
+                    <p class="text-muted">The element below is hidden until a certain height is reached</p>
+
+                    <hr>
+
+                    <p id="hidden-element"
+                        class="w-100 p-3 m-3 mx-auto bg-primary text-warning border rounded text-center"
+                        style="font-size: 2rem;">invisible</p>
+
+                </div>
+
+                <hr>
+
+                <div class="container-fluid">
+                    <div class="body-of-text bg-lightish m-5 p-5 border rounded text-warning">
+                        This is a mock page with things put in place to test the functionality of my spider!
+                    </div>
+
+                    <div class="body-of-text bg-lightish m-5 p-5 border rounded text-info">
+                        I've intentionally put a lot of content here just to make the page vertically longer
+                    </div>
+
+                    <div class="body-of-text bg-lightish m-5 p-5 border rounded text-primary">
+                        This section is all about having large bodies of text that fill up space.
+                    </div>
+
+                    <div class="body-of-text bg-lightish m-5 p-5 border rounded text-danger">
+                        This is the last large body of text mean to just occupy vertical space.
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div id="slow-input-test" class="container-fluid text-center border bg-lightish p-3 my-5">
+
+                    <h2 class=text-left>Slow Input Test</h2>
+
+                    <hr>
+
+                    <div class="row-fluid text-center">
+                        <input type="text" id="slow-input-field" class="w-75 form-control mx-auto">
+                    </div>
+
+                    <input type="button" id="slow-results-button" class="btn btn-dark border mt-3"
+                        onclick="showSlowInputResult()" value="Submit" />
+
+                    <div class="container mt-3 text-left">
+
+                        <p class="text-muted">Results will be shown here</p>
+                        <p id="slow-input-results" class="bg-light p-3 border rounded"></p>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div id="button-click-test" class="container-fluid text-center border bg-lightish p-3">
+                    <h2 class="text-left">Button Click Test</h2>
+
+                    <hr>
+
+                    <input type="button" class="btn btn-dark" id="click-test-button" onclick="testButtonOutput()" value="Click Me"/>
+                    
+                    <div class="container-fluid mt-3 text-left">
+
+                        <p class="text-muted">Results will be shown here</p>
+
+                        <p class="bg-light border rounded p-3 w-100" id="button-onclick-output">
+                            Button has not been clicked yet
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
     </div>
 
-    <div class="main-container">
+    <footer class="bg-secondary mt-5 p-5">
+        
+        <div class="container-fluid">
 
-        <h1 id="page-title" class="page-title">Welcome to this mock html webpage</h1>
-        <h2>Not much todo here for a plain ol' human</h2>
-
-        <span class="separator small-margins"></span>
-
-        <span class="separator small-margins"></span>
-
-        <div id="bodies-of-text">
-            <div class="large-text">
-                The tests in this page are meant to test the features of the spider to validate that function
-                as expected
-            </div>
-
-            <div class="large-text">
-                These tests are meant to put the spider through every possible circumstance it could come across,
-                therefore, one of the tests is actually just every single feature that the spider has being used,
-                one after the other.
-            </div>
-
-            <div class="large-text">
-                The page is divided into different sections relevant to each test, but it's a bit chaotic
-                because I started getting a bit lazy half-way, mainly because the spider doesn't care what
-                I label the sections.
-            </div>
-
-            <div class="large-text">
-                These bodies of text are here to take up vertical space to make visualising scroll tests a bit easier.
-            </div>
-
-            <div class="large-text">
-                Through a lot of testing, I have discovered that I cover a vertical distance of about 600 pixels
-                with every mousewheel scroll. which is why that's the amount that I've set for my mousewheel scroll
-                function!
-            </div>
-
-        </div>
-        <!-- End of bodies of text -->
-
-        <span class="separator"></span>
-
-        <div id="scrolling-tests">
-            <h1>Scrolling Tests</h1>
-
-            <div id="smooth-vertical" class="scroll-test">
-                Page should be smoothly scrolling to exactly this spot
-                <span id="smooth-vertical-current-y" style="margin-left: 15%;"></span>
-            </div>
-
-            <div id="instant-vertical" class="scroll-test">
-                Page should have instantly scrolled to exactly this spot
-                <span id="instant-vertical-current-y" style="margin-left: 15%;"></span>
-            </div>
-
-        </div>
-        <!-- End of Scrolling Tests -->
-
-        <span class="separator"></span>
-
-        <div id="combobox-tests">
-            <h1>Combobox Tests</h1>
-
-            <select class="combobox" id="test-combobox">
-                <option>Carrot</option>
-                <option>Urchin</option>
-                <option>Nuts</option>
-                <option>Tomato</option>
-            </select>
-
-        </div>
-        <!-- End of Combobox Tests -->
-
-        <span class="separator"></span>
-
-        <div id="debug-section">
-            <h1>Debug Section</h1>
-
-        </div>
-        <!-- End of Debug Section -->
-
-        <span class="separator"></span>
-
-        <div id="hidden-until-scroll-test">
-            <p id="hidden-element">invisible</p>
-        </div>
-
-        <span class="separator"></span>
-
-        <div id="bodies-of-text">
-            <div class="large-text">
-                This is a mock page with things put in place to test the functionality of my spider!
-            </div>
-
-            <div class="large-text">
-                I've intentionally put a lot of content here just to make the page vertically longer
-            </div>
-
-            <div class="large-text">
-                This section is all about having large bodies of text that fill up space.
-            </div>
-
-            <div class="large-text">
-                This is the last large body of text mean to just occupy veritcal space.
+            <div class="row-fluid text-right text-warning">
+                <p>Created by Abdulaziz Nal - Package Maintainer</p>
+                <p>If you notice anything wrong, let me know @<strong>aziznal.dev@gmail.com</strong></p>
+                <p>This Page was last updated on release version <strong>0.13.7</strong></p>
             </div>
 
         </div>
 
-        <span class="separator"></span>
+    </footer>
 
-        <div id="slow-input-test">
-            <h1>Slow Input Test</h1>
-            <input type="text" id="slow-input-field">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 
-            <button id="slow-results-button" onclick="showSlowInputResult()">
-                Click to submit input
-            </button>
-
-            <p id="slow-input-results"></p>
-        </div>
-
-        <span class="separator"></span>
-
-        <div id="button-click-test">
-            <h1>Button Click Test</h1>
-
-            <button id="click-test-button" onclick="testButtonOutput()">
-                Clicky Clicky
-            </button>
-
-            <span class="centered-block" id="button-onclick-output">Button has not been clicked yet</span>
-
-        </div>
-
-    </div>
-    <!-- End of main container -->
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
 
 </body>
 

@@ -18,7 +18,7 @@ default_options.headless = False
 
 
 class BasicSpider:
-    def __init__(self, url=None, sleep_time=3, options=default_options):
+    def __init__(self, url=None, options=default_options):
         """ 
         Args:
 
@@ -29,7 +29,6 @@ class BasicSpider:
 
         self.confirm_geckodriver_in_dir()
 
-        self.sleep_time = sleep_time
         self._browser = webdriver.Firefox(options=options)
 
         if url is not None:
@@ -39,7 +38,8 @@ class BasicSpider:
         else:
             self.page_soup = None
 
-    def confirm_geckodriver_in_dir(self):
+    @staticmethod
+    def confirm_geckodriver_in_dir():
         
         # Open local dir.
         # Get list of files in dir.
@@ -56,7 +56,8 @@ class BasicSpider:
     def _load_page_soup(self):
         return BeautifulSoup(self._browser.page_source, features="lxml")
 
-    def _confirm_positive_integer(self, value, include_zero=False):
+    @staticmethod
+    def _confirm_positive_integer(value, include_zero=False):
         """
         Check given value to be a positive integer
         """
@@ -74,7 +75,8 @@ class BasicSpider:
         except AssertionError:
             raise ValueError("value must be a positive integer")
 
-    def _get_rand_float(self, range_=(0, 1)):
+    @staticmethod
+    def _get_rand_float(range_=(0, 1)):
         """
         returns a random float number within given range using random.uniform()
         """
@@ -85,6 +87,7 @@ class BasicSpider:
         y_offset = self._browser.execute_script("return window.pageYOffset")
 
         return y_offset
+
 
     def get_element_y(self, element_id=None, element_class=None):
         """
@@ -103,7 +106,6 @@ class BasicSpider:
         else:
             msg = "Pass either element_id OR element_class, but not both"
             raise ParameterError(msg)
-
 
     def get_element_inner_html(self, element_id=None, element_class=None):
         """
@@ -135,12 +137,13 @@ class BasicSpider:
             msg = "Pass either element_id or element_class, but not both"
             raise ParameterError(msg)
 
-    def wait(self, time=None):
+    @staticmethod
+    def wait(time=None):
 
         if time is None:
-            time = self.sleep_time
+            time = 3
 
-        sleep(self.sleep_time)
+        sleep(time)
 
     def goto(self, url, wait=False, wait_for=None):
         """
@@ -166,7 +169,8 @@ class BasicSpider:
         # refresh page source to get new changes
         self.page_soup = self._load_page_soup()
 
-    def get_timestamp(self, for_filename=False):
+    @staticmethod
+    def get_timestamp(for_filename=False):
         """
         returns a formatted timestamp string (e.g "2020-09-25 Weekday 16:45:37" )
         """
@@ -181,6 +185,7 @@ class BasicSpider:
     def smooth_vscroll_down_to(self, scroll_to, speed=1):
         """
         Smoothly scroll down to given position
+
         :Paramaters
 
         scroll_to: (int) y position to scroll to.
@@ -232,8 +237,7 @@ class BasicSpider:
 
     def smooth_vscroll_up_to(self, scroll_to, speed=1):
         """
-        Slowly scroll to a given y coordinate. if y is not given,
-        then scroll down infinitely, but stop when the bottom is reached.
+        Slowly scroll to a given y coordinate.
 
         :Paramaters
 
@@ -359,39 +363,25 @@ class BasicSpider:
             sleep(0.2)
 
 
-    def slow_type(self, sentence, speed=0, field_id=None, field=None, speed_range=(0.05, 0.25)):
+    def slow_type(self, text, field, speed_range=(0.05, 0.25)):
         """
         Slowly send text to a given input field.
 
         :Params:
 
-        sentence: (str) text to send to field
+        text: (str) text to send to field
 
-        speed: (int) how quick to send text
+        speed_range: (int) how quick to send text
 
-        field_id: (str) id of input field.
-
-        field: (selenium.WebElement) pass instead of field_id.
+        field: (selenium.WebElement) field to send the text to.
         """
 
         range_ = speed_range
 
-        if field is not None:
-            for letter in sentence:
-                field.send_keys(letter)
-                sleep(self._get_rand_float(range_))
+        for letter in text:
+            field.send_keys(letter)
+            sleep(self._get_rand_float(range_))
 
-        elif field_id is not None:
-            # Raises NoSuchElementException
-            field = self._browser.find_element_by_id(field_id)
-
-            for letter in sentence:
-                field.send_keys(letter)
-                sleep(self._get_rand_float(range_))
-
-        else:
-            raise ParameterError(
-                "Must pass either 'field' OR 'field_id', but not both.")
 
     def clear_input(self, element_id):
         """

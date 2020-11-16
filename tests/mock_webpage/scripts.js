@@ -14,7 +14,7 @@ const displayPageY = (element_id) => {
 
     let element = document.getElementById(element_id);
 
-    element.innerHTML = "Page Y = " + "<strong>" + page_y + "<strong>";
+    element.innerHTML = "Current Scroll Amount = " + "<strong>" + page_y + "<strong>";
 
 }
 
@@ -49,9 +49,9 @@ const showOnHeightReached = (element_id, height) => {
     element = document.getElementById(element_id);
     element.style.visibility = "hidden";
 
-    // Check for correct height every ten seconds
+    // Check for correct height every ten milliseconds
     let timer = setInterval(() => {
-        let height_passed = getPageY() >= height;
+        let height_passed = getPageY() >= height - 540;
 
         if (height_passed){
             element.style.visibility = "visible";
@@ -82,8 +82,8 @@ const passTest = (parent_element) => {
 
     // console.log(parent_element.style.opacity);
     // parent_element.style.opacity = '100%';
-
-    parent_element.children[0].style.opacity = 1;
+    
+    parent_element.children[1].style.opacity = 1;
 
 }
 

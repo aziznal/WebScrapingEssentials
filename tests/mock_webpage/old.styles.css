@@ -1,0 +1,194 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: beige;
+
+    display: grid;
+    margin: auto;
+
+    padding: 1em;
+
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+button {
+    display:block;
+    margin: 1em auto;
+
+    padding: 0.7em;
+}
+
+.side-bar-container {
+    position: fixed;
+
+    width: 17%;
+
+    padding: 0.3em;
+
+    border: 1px dotted black;
+    border-radius: 3px;
+}
+
+.side-bar-display {
+    padding: 1em;
+
+    margin: 1em 0;
+
+    background-color: blanchedalmond;
+
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.test-check {
+
+    display: flex;
+    align-items: center;
+    justify-content: right;
+
+    width: 100%;
+    border-bottom: 1px solid rgb(223, 223, 223);
+
+    font-family: consolas;
+    
+    font-size: 0.9em;
+
+    margin-left: -0.3em;
+    
+    /* font-size: 0.7em; */
+}
+
+.tick-img {
+    /* width: 7%; */
+    height: auto;
+    
+    padding: 0 1em;
+    
+    /* margin-bottom: -0.5em; */
+
+    opacity: 0;
+
+}
+
+.main-container {
+
+    display: flex;
+    flex-direction: column;
+    
+    padding-bottom: 10em;
+
+    width: 60%;
+    margin: auto;
+
+    background-color: rgb(217, 255, 235);
+
+    border: 1px solid black;
+
+}
+
+.separator {
+    display: block;
+
+    width: 95%;
+    margin: 4em auto;
+
+    border-bottom: 1px solid black;
+}
+
+.small-margins {
+    margin: 0.4em auto;
+}
+
+.large-text {
+    
+    margin: 3em auto;
+
+    padding: 1em;
+
+    width: 50%;
+
+    font-size: 20px;
+    text-align: center;
+
+    background-color: aquamarine;
+
+    border: 2px dashed black;
+
+}
+
+.scroll-test {
+
+    margin: 0.65em;
+    margin-bottom: 16em;
+
+    padding: 0.65em;
+    
+
+    font-size: 25px;
+
+    background-color: rgb(255, 248, 239);
+
+    border-bottom: 3px solid red;
+
+}
+
+#combobox-tests {
+    display: flex;
+    flex-direction: column;
+
+    margin: auto;
+
+    width: 30%;
+
+    border: 1px solid red;
+
+}
+
+.combobox {
+
+    margin: 1em;
+    padding: 0.3em 1em;
+
+    font-size: 30px;
+
+    border: 2px solid black;
+}
+
+#hidden-until-scroll-test {
+
+    margin: 3em auto;
+    padding: 1em;
+
+    width: 50%;
+
+    background-color: rgb(201, 104, 201);
+    color: rgb(170, 255, 159);
+
+    font-weight: bold;
+    font-size: 2em;
+
+    text-align: center;
+    
+    border-radius: 50px;
+
+}
+
+#slow-input-field, #slow-input-results, .centered-block {
+
+    display: block;
+
+    width: 45%;
+
+    margin: auto;
+
+    padding: 0.2em;
+
+    font-size: 1.2em;
+    font-weight: bold;
+
+}

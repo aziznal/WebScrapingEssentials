@@ -105,38 +105,23 @@ class TestSpider(unittest.TestCase):
         with self.assertRaises(ValueError):
             method(100, speed=3.564)
 
-    ### DONE
-    def test_send_enter(self):
-        """
-        Spider will type something into an input field, then trigger
-        a button by sending it an Enter keypress which will show the
-        typed text in a target below the input field.
-        """
 
-        input_field_id = "slow-input-field"
-        target_output_id = "slow-input-results"
-        target_trigger_id = "slow-results-button"
-        exepcted_text = "What does the fox say?"
+    def test_get_element_text(self):
+        field_id = "slow-input-field"
+        field = self.spider._browser.find_element_by_id(field_id)
 
-        # Scroll into view
-        input_field_y = self.spider.get_element_y(element_id=input_field_id)
-        self.spider.instant_vscroll_to(input_field_y)
+        starting_text = "Have you ever been to the cloud district?"
 
-        # Type something into field
-        self.spider.slow_type(sentence=exepcted_text, field_id=input_field_id, speed_range=(0.02, 0.08))
+        element_y = self.spider.get_element_y(element_id=field_id)
 
-        # Confirm target is empty before submission
-        target_empty = len(self.spider.get_element_inner_html(element_id=target_output_id)) == 0
-        self.assertTrue(target_empty)
+        self.spider.instant_vscroll_to(element_y)
+        self.spider.slow_type(text=starting_text, field=field, speed_range=(0.02, 0.08))
 
-        # Send an Enter to the target
-        self.spider.send_enter(element_id=target_trigger_id)
+        # Confirm field is filled with given text
+        current_text = self.spider.get_element_text(element_id=field_id)
+        self.assertEqual(current_text, starting_text)
 
-        # Check target output for expected text
-        actual_text = self.spider.get_element_inner_html(element_id=target_output_id)
-        self.assertEqual(exepcted_text, actual_text)
-        self.assertNotEqual(actual_text, "Something completely unrelated")
-
+        self.checked_tests.append("get-element-text-test")
 
 if __name__ == "__main__":
     unittest.main()
